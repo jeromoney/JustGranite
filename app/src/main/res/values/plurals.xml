@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="mins_format">
+        <item quantity="zero">0 mins</item>
+        <item quantity="one">1 min</item>
+        <item quantity="other">%d mins</item>
+    </plurals>
+
+    <plurals name="hours_format">
+        <item quantity="zero">0 hours</item>
+        <item quantity="one">1 hour</item>
+        <item quantity="other">%d hours</item>
+    </plurals>
+
+    <plurals name="days_format">
+        <item quantity="zero">0 days</item>
+        <item quantity="one">1 day</item>
+        <item quantity="other">%d days</item>
+    </plurals>
+</resources>

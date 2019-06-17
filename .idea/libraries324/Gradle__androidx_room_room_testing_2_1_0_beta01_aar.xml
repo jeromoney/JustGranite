@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="Gradle: androidx.room:room-testing:2.1.0-beta01@aar">
+    <CLASSES>
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/3ee923cad1bd8b3d5e0bec6299d018eb/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/3ee923cad1bd8b3d5e0bec6299d018eb/jars/classes.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/androidx.room/room-testing/2.1.0-beta01/bea19881f104244f3cb90fabe6cd7cefc6dd1b58/room-testing-2.1.0-beta01-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
