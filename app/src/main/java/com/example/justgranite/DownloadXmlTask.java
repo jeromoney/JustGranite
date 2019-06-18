@@ -10,7 +10,7 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class DownloadXmlTask extends AsyncTask<String, Void, FlowValue> {
+class DownloadXmlTask extends AsyncTask<String, Void, FlowValue> {
     private final static String TAG = DownloadXmlTask.class.getSimpleName();
     private final GraniteViewModel mViewModel;
 
@@ -44,20 +44,14 @@ public class DownloadXmlTask extends AsyncTask<String, Void, FlowValue> {
     // Uploads XML from stackoverflow.com, parses it, and combines it with
 // HTML markup. Returns HTML string.
     public FlowValue loadXmlFromNetwork(String urlString) throws XmlPullParserException, IOException {
-        InputStream stream = null;
         // Instantiate the parser
+
         WaterServiceXMLParser waterServiceXMLParser = new WaterServiceXMLParser();
         FlowValue flowValue;
-
-        try {
-            stream = downloadUrl(urlString);
+        try (InputStream stream = downloadUrl(urlString)) {
             flowValue = waterServiceXMLParser.parse(stream);
             // Makes sure that the InputStream is closed after the app is
             // finished using it.
-        } finally {
-            if (stream != null) {
-                stream.close();
-            }
         }
 
         return flowValue;

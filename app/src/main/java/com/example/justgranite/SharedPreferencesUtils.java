@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
-public class SharedPreferencesUtils {
+class SharedPreferencesUtils {
     public static FlowValue getSavedFlowValue(Context context){
         SharedPreferences sharedPreferences =
                 PreferenceManager.getDefaultSharedPreferences(context);

@@ -1,6 +1,5 @@
 package com.example.justgranite;
 
-import android.content.Context;
 import android.util.Xml;
 
 import org.xmlpull.v1.XmlPullParser;
@@ -10,18 +9,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.Date;
 
 
 /**
  * reads from https://waterservices.usgs.gov/nwis/iv/?format=waterml,2.0&sites=07087050&parameterCd=00060&siteStatus=all
  */
-public class WaterServiceXMLParser {
-    private static String TAG = WaterServiceXMLParser.class.getSimpleName();
-
-    private static final String ns = null;
-    private Context context;
+class WaterServiceXMLParser {
 
     public FlowValue parse(InputStream in) throws XmlPullParserException, IOException{
         try {
@@ -41,7 +35,6 @@ public class WaterServiceXMLParser {
         int flow;
         int eventType = parser.getEventType();
         String timeStr;
-        LocalDate localDate = null;
         SimpleDateFormat sdf;
         Date mDate;
         long timeInMilliseconds = 0;

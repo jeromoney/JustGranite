@@ -9,13 +9,14 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 public class GraniteViewModel extends ViewModel {
 
-    public LiveData<String> mFlowStr;
-    public MutableLiveData<FlowValue> mFlowValue;
-    public LiveData<String> mAgeStr;
+    public final LiveData<String> mFlowStr;
+    public final MutableLiveData<FlowValue> mFlowValue;
+    public final LiveData<String> mAgeStr;
     private Context mContext;
 
 
@@ -27,10 +28,10 @@ public class GraniteViewModel extends ViewModel {
                     if (flowValue == null || flowValue.mFlow == 0) return "---";
                     else return flowValue.mFlow.toString();}
         );
-        mFlowValue.setValue(new FlowValue(0, (long) 0, mContext));
+        mFlowValue.setValue(new FlowValue(0, (long) 0, null));
         mAgeStr = Transformations.map(
                 mFlowValue,
-                flowValue -> TimeFormatterUtil.formatFreshness(flowValue));
+                TimeFormatterUtil::formatFreshness);
     }
 
     public void setmContext(Context context){
@@ -61,7 +62,7 @@ public class GraniteViewModel extends ViewModel {
 
     private boolean isDataFresh(){
         long currentTime = System.currentTimeMillis();
-        long timeInterval = currentTime - mFlowValue.getValue().mTimeStamp;
+        long timeInterval = currentTime - Objects.requireNonNull(mFlowValue.getValue()).mTimeStamp;
         return (timeInterval < TimeUnit.HOURS.toMillis(1));
     }
 

@@ -20,7 +20,6 @@ import com.example.justgranite.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity implements NetworkReceiver.onInternetConnectedListener {
 
-    private static final String TAG = MainActivity.class.getSimpleName();
     private GraniteViewModel graniteViewModel;
     private NetworkReceiver receiver = new NetworkReceiver();
 
@@ -79,7 +78,7 @@ public class MainActivity extends AppCompatActivity implements NetworkReceiver.o
         graniteViewModel.loadFlow();
     }
 
-    public boolean isOnline() {
+    private boolean isOnline() {
         ConnectivityManager connMgr = (ConnectivityManager)
                 getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();

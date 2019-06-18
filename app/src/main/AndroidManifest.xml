@@ -14,6 +14,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <action android:name="android.intent.action.VIEW" />
+
+
+
         <uses-library android:name="android.test.runner"
             android:required="false" />
         <receiver android:name=".GraniteAppWidget">

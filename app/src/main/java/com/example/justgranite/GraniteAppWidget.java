@@ -20,7 +20,7 @@ public class GraniteAppWidget extends AppWidgetProvider {
 
     private static final String MyOnClick = "MyOnclickTag";
 
-    static void updateAppWidget(final Context context, AppWidgetManager appWidgetManager,
+    private static void updateAppWidget(final Context context, AppWidgetManager appWidgetManager,
                                 int appWidgetId) {
         // First load flow from memory
         FlowValue flowValue = SharedPreferencesUtils.getSavedFlowValue(context);
@@ -75,7 +75,7 @@ public class GraniteAppWidget extends AppWidgetProvider {
         for (int appWidgetId : appWidgetIds) {
             updateAppWidget(context, appWidgetManager, appWidgetId);
             RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.granite_app_widget);
-            views.setOnClickPendingIntent(R.id.appwidget_text, getPendingSelfIntent(context, MyOnClick));
+            views.setOnClickPendingIntent(R.id.appwidget_text, getPendingSelfIntent(context));
             appWidgetManager.updateAppWidget(appWidgetId, views);
 
         }
@@ -91,9 +91,9 @@ public class GraniteAppWidget extends AppWidgetProvider {
         // Enter relevant functionality for when the last widget is disabled
     }
 
-    protected PendingIntent getPendingSelfIntent(Context context, String action){
+    private PendingIntent getPendingSelfIntent(Context context){
         Intent intent = new Intent(context, getClass());
-        intent.setAction(action);
+        intent.setAction(MyOnClick);
         return PendingIntent.getBroadcast(context, 0, intent, 0);
     }
 
