@@ -1,6 +1,5 @@
 package com.example.justgranite;
 
-import android.content.Context;
 import android.content.res.Resources;
 
 import java.util.concurrent.TimeUnit;
