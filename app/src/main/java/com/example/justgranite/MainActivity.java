@@ -8,7 +8,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -22,7 +21,7 @@ import com.example.justgranite.databinding.ActivityMainBinding;
 public class MainActivity extends AppCompatActivity implements NetworkReceiver.onInternetConnectedListener {
 
     private static final String TAG = MainActivity.class.getSimpleName();
-    private static GraniteViewModel graniteViewModel;
+    private GraniteViewModel graniteViewModel;
     private NetworkReceiver receiver = new NetworkReceiver();
 
     @Override
@@ -88,7 +87,7 @@ public class MainActivity extends AppCompatActivity implements NetworkReceiver.o
     }
 
     public void launchGauge(View view){
-        String URL = "https://waterdata.usgs.gov/monitoring-location/07087050/";
+        String URL = getApplicationContext().getString(R.string.granite_gauge_url);
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setData(Uri.parse(URL));
         startActivity(intent);

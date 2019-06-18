@@ -11,9 +11,8 @@ public class SharedPreferencesUtils {
         if (sharedPreferences.contains("time") && sharedPreferences.contains("flow")){
             // shared preference file exists so load data
             Long time = sharedPreferences.getLong("time",0);
-            Integer flow = sharedPreferences.getInt("flow", 0);
-            FlowValue flowValue = new FlowValue(flow, time, context);
-            return flowValue;
+            int flow = sharedPreferences.getInt("flow", 0);
+            return new FlowValue(flow, time, context);
         }
         else return null;
     }

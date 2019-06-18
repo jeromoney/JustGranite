@@ -50,7 +50,7 @@ public class GraniteViewModel extends ViewModel {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putLong("time", flowValue.getmTimeStamp());
         editor.putInt("flow", flowValue.getmFlow());
-        editor.commit();
+        editor.apply();
     }
 
     public void loadFlow(){
@@ -60,8 +60,8 @@ public class GraniteViewModel extends ViewModel {
     }
 
     private boolean isDataFresh(){
-        Long currentTime = System.currentTimeMillis();
-        Long timeInterval = currentTime - mFlowValue.getValue().mTimeStamp;
+        long currentTime = System.currentTimeMillis();
+        long timeInterval = currentTime - mFlowValue.getValue().mTimeStamp;
         return (timeInterval < TimeUnit.HOURS.toMillis(1));
     }
 

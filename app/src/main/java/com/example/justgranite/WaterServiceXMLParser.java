@@ -1,8 +1,6 @@
 package com.example.justgranite;
 
 import android.content.Context;
-import android.os.Build;
-import android.util.Log;
 import android.util.Xml;
 
 import org.xmlpull.v1.XmlPullParser;
@@ -13,7 +11,6 @@ import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 
@@ -30,24 +27,23 @@ public class WaterServiceXMLParser {
         try {
             XmlPullParser parser = Xml.newPullParser();
             parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, true);
-            Log.d("i am ","here");
             parser.setInput(in, null);
             parser.nextTag();
             return readFeed(parser);
         } finally {
 
-            // in.close();
+            in.close();
         }
     }
 
     private FlowValue readFeed(XmlPullParser parser) throws XmlPullParserException, IOException{
         //parser.require(XmlPullParser.START_TAG, ns, "feed");
-        int flow = -1;
+        int flow;
         int eventType = parser.getEventType();
         String timeStr;
         LocalDate localDate = null;
         SimpleDateFormat sdf;
-        Date mDate = null;
+        Date mDate;
         long timeInMilliseconds = 0;
         // Grab the time and flow value
         while (eventType != XmlPullParser.END_DOCUMENT){

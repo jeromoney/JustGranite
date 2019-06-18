@@ -2,8 +2,6 @@ package com.example.justgranite;
 
 import android.content.Context;
 
-import java.util.Date;
-
 public class FlowValue {
     public Integer mFlow;
     public Long mTimeStamp;

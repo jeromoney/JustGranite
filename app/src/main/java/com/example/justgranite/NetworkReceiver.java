@@ -11,7 +11,7 @@ public class NetworkReceiver extends BroadcastReceiver {
     private onInternetConnectedListener listener = null;
 
     public interface  onInternetConnectedListener {
-        public void onInternetConnected();
+        void onInternetConnected();
     }
 
     public void  setonInternetConnectedListener(Context context){

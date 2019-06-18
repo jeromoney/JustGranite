@@ -8,8 +8,8 @@ public class TimeFormatterUtil {
 
     public static String formatFreshness(FlowValue flowValue){
         if (flowValue == null || flowValue.mFlow == 0) return "";
-        Long currentTime = System.currentTimeMillis();
-        Long timeInterval = currentTime - flowValue.mTimeStamp;
+        long currentTime = System.currentTimeMillis();
+        long timeInterval = currentTime - flowValue.mTimeStamp;
         String timeDisplay;
         Resources resources = flowValue.getmContext().getResources();
 

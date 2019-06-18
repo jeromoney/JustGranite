@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.util.Log;
 import android.widget.RemoteViews;
 
 import org.xmlpull.v1.XmlPullParserException;
