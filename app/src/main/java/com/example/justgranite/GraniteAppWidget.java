@@ -26,6 +26,12 @@ public class GraniteAppWidget extends AppWidgetProvider {
         FlowValue flowValue = SharedPreferencesUtils.getSavedFlowValue(context);
         if (flowValue != null) setLayout(context, appWidgetManager, appWidgetId, flowValue);
 
+        // Set onClick method
+        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.granite_app_widget);
+        views.setOnClickPendingIntent(R.id.appwidget_text, getPendingSelfIntent(context));
+        appWidgetManager.updateAppWidget(appWidgetId, views);
+
+
         // Get flow info as an async task
         new AsyncTask<Context, Void, FlowValue>(){
 
@@ -50,6 +56,7 @@ public class GraniteAppWidget extends AppWidgetProvider {
             protected void onPostExecute(FlowValue flowValue) {
                 super.onPostExecute(flowValue);
                 // Construct the RemoteViews object
+                // if flowValue is null, the internet is probably off so don't update value.
                 if (flowValue != null) {
                     setLayout(context, appWidgetManager, appWidgetId, flowValue);
                 }
@@ -76,9 +83,7 @@ public class GraniteAppWidget extends AppWidgetProvider {
         // There may be multiple widgets active, so update all of them
         for (int appWidgetId : appWidgetIds) {
             updateAppWidget(context, appWidgetManager, appWidgetId);
-            RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.granite_app_widget);
-            views.setOnClickPendingIntent(R.id.appwidget_text, getPendingSelfIntent(context));
-            appWidgetManager.updateAppWidget(appWidgetId, views);
+
 
         }
     }
@@ -93,8 +98,8 @@ public class GraniteAppWidget extends AppWidgetProvider {
         // Enter relevant functionality for when the last widget is disabled
     }
 
-    private PendingIntent getPendingSelfIntent(Context context){
-        Intent intent = new Intent(context, getClass());
+    private static PendingIntent getPendingSelfIntent(Context context){
+        Intent intent = new Intent(context, GraniteAppWidget.class);
         intent.setAction(MyOnClick);
         return PendingIntent.getBroadcast(context, 0, intent, 0);
     }
