@@ -50,7 +50,9 @@ public class GraniteAppWidget extends AppWidgetProvider {
             protected void onPostExecute(FlowValue flowValue) {
                 super.onPostExecute(flowValue);
                 // Construct the RemoteViews object
-                setLayout(context, appWidgetManager, appWidgetId, flowValue);
+                if (flowValue != null) {
+                    setLayout(context, appWidgetManager, appWidgetId, flowValue);
+                }
             }
         }.execute();
 

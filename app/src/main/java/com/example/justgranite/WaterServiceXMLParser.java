@@ -14,6 +14,7 @@ import java.util.Date;
 
 /**
  * reads from https://waterservices.usgs.gov/nwis/iv/?format=waterml,2.0&sites=07087050&parameterCd=00060&siteStatus=all
+ * Contains knowledge of the USGS xml files and how to pull data from them.
  */
 class WaterServiceXMLParser {
 
