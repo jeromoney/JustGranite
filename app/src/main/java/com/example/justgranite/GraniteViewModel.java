@@ -46,17 +46,11 @@ public class GraniteViewModel extends ViewModel {
         if (flowValue == null) return;
         if (flowValue.getmContext() == null) flowValue.setmContext(mContext);
         mFlowValue.setValue(flowValue);
-        // Store values in shared preferences
-        SharedPreferences sharedPreferences =
-                PreferenceManager.getDefaultSharedPreferences(mContext);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putLong("time", flowValue.getmTimeStamp());
-        editor.putInt("flow", flowValue.getmFlow());
-        editor.apply();
+        SharedPreferencesUtils.setSavedFlowValue(mContext, flowValue);
     }
 
     public void loadFlow(){
-        if (getmFlowValue().getValue().isDataFresh()) {
+        if (!getmFlowValue().getValue().isDataFresh()) {
             new DownloadXmlTask(this).execute(mContext.getString(R.string.granite_url));
         }
     }

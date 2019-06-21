@@ -30,7 +30,7 @@ public class GraniteAppWidget extends AppWidgetProvider {
 
         // First load flow from memory
         FlowValue flowValue = SharedPreferencesUtils.getSavedFlowValue(context);
-        if (flowValue != null){
+        if (flowValue != null && flowValue.isDataGood()){
             setLayout(context, appWidgetManager, appWidgetId, flowValue);
             // if data is fresh enough, we're done. save battery and network usage.
             if (flowValue.isDataFresh()){
@@ -63,8 +63,10 @@ public class GraniteAppWidget extends AppWidgetProvider {
                 super.onPostExecute(flowValue);
                 // Construct the RemoteViews object
                 // if flowValue is null, the internet is probably off so don't update value.
-                if (flowValue != null) {
+                if (flowValue != null && flowValue.isDataGood()) {
                     setLayout(context, appWidgetManager, appWidgetId, flowValue);
+                    // Save value to shared preferences
+                    SharedPreferencesUtils.setSavedFlowValue(context, flowValue);
                 }
             }
         }.execute();
