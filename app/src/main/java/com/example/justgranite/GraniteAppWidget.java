@@ -12,7 +12,6 @@ import android.widget.RemoteViews;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Implementation of App Widget functionality.
@@ -20,22 +19,28 @@ import java.util.concurrent.TimeUnit;
 public class GraniteAppWidget extends AppWidgetProvider {
 
     private static final String MyOnClick = "MyOnclickTag";
+    private static AppWidgetManager mAppWidgetManager;
+    private static int[] mAppWidgetIds;
 
     private static void updateAppWidget(final Context context, AppWidgetManager appWidgetManager,
                                 int appWidgetId) {
         // Set onClick method
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.granite_app_widget);
-        views.setOnClickPendingIntent(R.id.appwidget_text, getPendingSelfIntent(context));
+        views.setOnClickPendingIntent(R.id.justgranite_widget, getPendingSelfIntent(context));
         appWidgetManager.updateAppWidget(appWidgetId, views);
 
         // First load flow from memory
-        FlowValue flowValue = SharedPreferencesUtils.getSavedFlowValue(context);
+        FlowValue flowValue = SharedPreferencesUtil.getSavedFlowValue(context);
         if (flowValue != null && flowValue.isDataGood()){
             setLayout(context, appWidgetManager, appWidgetId, flowValue);
             // if data is fresh enough, we're done. save battery and network usage.
             if (flowValue.isDataFresh()){
                 return;
             }
+        }
+        else {
+            // fill widget with no data display
+            setLayout(context, appWidgetManager, appWidgetId, null);
         }
 
         // Get flow info as an async task
@@ -66,7 +71,7 @@ public class GraniteAppWidget extends AppWidgetProvider {
                 if (flowValue != null && flowValue.isDataGood()) {
                     setLayout(context, appWidgetManager, appWidgetId, flowValue);
                     // Save value to shared preferences
-                    SharedPreferencesUtils.setSavedFlowValue(context, flowValue);
+                    SharedPreferencesUtil.setSavedFlowValue(context, flowValue);
                 }
             }
         }.execute();
@@ -76,6 +81,10 @@ public class GraniteAppWidget extends AppWidgetProvider {
     public void onReceive(Context context, Intent intent) {
         super.onReceive(context, intent);
         if (MyOnClick.equals(intent.getAction())){
+            // User clicked on widget so lets update widget.
+            onUpdate(context, mAppWidgetManager, mAppWidgetIds);
+
+            // launch web page
             String URL = "https://waterdata.usgs.gov/monitoring-location/07087050/";
             Intent newIntent = new Intent(Intent.ACTION_VIEW);
             newIntent.setData(Uri.parse(URL));
@@ -85,6 +94,9 @@ public class GraniteAppWidget extends AppWidgetProvider {
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
+        mAppWidgetIds = appWidgetIds;
+        mAppWidgetManager = appWidgetManager;
+
         // There may be multiple widgets active, so update all of them
         for (int appWidgetId : appWidgetIds) {
             updateAppWidget(context, appWidgetManager, appWidgetId);
@@ -111,19 +123,22 @@ public class GraniteAppWidget extends AppWidgetProvider {
     private static void setLayout(final Context context, AppWidgetManager appWidgetManager,
                                         int appWidgetId, FlowValue flowValue){
         String flowStr;
+        String ageStr;
         if (flowValue == null){
             flowStr = context.getString(R.string.flowDefault);
+            ageStr = context.getString(R.string.ageDefault);
         }
         else {
             flowStr = flowValue.getmFlow().toString();
+            ageStr = TimeFormatterUtil.formatFreshness(flowValue);
         }
         String widgetText = context.getString(R.string.cfs_format);
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.granite_app_widget);
         views.setTextViewText(R.id.appwidget_text, String.format(widgetText, flowStr));
 
         // Set the data freshness
-        String AgeStr = TimeFormatterUtil.formatFreshness(flowValue);
-        views.setTextViewText(R.id.data_freshness, AgeStr);
+
+        views.setTextViewText(R.id.data_freshness, ageStr);
 
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);

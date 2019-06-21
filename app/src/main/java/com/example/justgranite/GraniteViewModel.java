@@ -1,8 +1,6 @@
 package com.example.justgranite;
 
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -34,7 +32,7 @@ public class GraniteViewModel extends ViewModel {
     public void setmContext(Context context){
         mContext = context;
         // Now that I have the context I can load values in shared preferences
-       FlowValue flowValue = SharedPreferencesUtils.getSavedFlowValue(context);
+       FlowValue flowValue = SharedPreferencesUtil.getSavedFlowValue(context);
        if (flowValue != null) setmFlowValue(flowValue);
     }
 
@@ -46,7 +44,7 @@ public class GraniteViewModel extends ViewModel {
         if (flowValue == null) return;
         if (flowValue.getmContext() == null) flowValue.setmContext(mContext);
         mFlowValue.setValue(flowValue);
-        SharedPreferencesUtils.setSavedFlowValue(mContext, flowValue);
+        SharedPreferencesUtil.setSavedFlowValue(mContext, flowValue);
     }
 
     public void loadFlow(){

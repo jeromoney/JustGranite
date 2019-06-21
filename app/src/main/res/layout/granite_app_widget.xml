@@ -5,7 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:background="#09C"
     android:padding="@dimen/widget_margin"
-    android:gravity="center">
+    android:gravity="center"
+    android:id="@+id/justgranite_widget">
 
     <TextView
         android:id="@+id/appwidget_text"

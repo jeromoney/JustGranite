@@ -48,9 +48,7 @@ public class MainActivity extends AppCompatActivity implements NetworkReceiver.o
         this.registerReceiver(receiver, filter);
         receiver.setonInternetConnectedListener(this);
 
-
-
-        if (isOnline() ){
+        if (InternetUtil.isOnline(getApplicationContext())){
             graniteViewModel.loadFlow();
         }
         else {
@@ -78,12 +76,6 @@ public class MainActivity extends AppCompatActivity implements NetworkReceiver.o
     public void onInternetConnected() {
         // Internet is connected to refresh data.
         graniteViewModel.loadFlow();
-    }
-    private boolean isOnline() {
-        ConnectivityManager connMgr = (ConnectivityManager)
-                getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-        return (networkInfo != null && networkInfo.isConnected());
     }
 
     public void launchGauge(View view){

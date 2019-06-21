@@ -6,4 +6,5 @@
     <string name="granite_url"><![CDATA[https://waterservices.usgs.gov/nwis/iv/?format=waterml,2.0&sites=07087050&parameterCd=00060]]></string>
     <string name="cfs_format">%s cfs</string>
     <string name="granite_gauge_url">https://waterdata.usgs.gov/monitoring-location/07087050/</string>
+    <string name="ageDefault">tap to update</string>
 </resources>
