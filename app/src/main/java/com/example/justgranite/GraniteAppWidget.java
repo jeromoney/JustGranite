@@ -7,7 +7,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.widget.RemoteViews;
+import android.widget.Toast;
 
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -18,6 +20,7 @@ import java.io.IOException;
  */
 public class GraniteAppWidget extends AppWidgetProvider {
 
+    private static final String TAG = GraniteAppWidget.class.getSimpleName();
     private static final String MyOnClick = "MyOnclickTag";
     private static AppWidgetManager mAppWidgetManager;
     private static int[] mAppWidgetIds;
@@ -42,6 +45,12 @@ public class GraniteAppWidget extends AppWidgetProvider {
             // fill widget with no data display
             setLayout(context, appWidgetManager, appWidgetId, null);
         }
+        if (!InternetUtil.isOnline(context)){
+            // No internet, so nothing to be done.
+            Log.d(TAG, "no internet");
+            return;
+        }
+
 
         // Get flow info as an async task
         new AsyncTask<Context, Void, FlowValue>(){
@@ -81,6 +90,14 @@ public class GraniteAppWidget extends AppWidgetProvider {
     public void onReceive(Context context, Intent intent) {
         super.onReceive(context, intent);
         if (MyOnClick.equals(intent.getAction())){
+            if (!InternetUtil.isOnline(context)){
+                // If there is no internet, nothing can be done.
+                Log.d(TAG, "no internet");
+
+                return;
+            }
+
+
             // User clicked on widget so lets update widget.
             onUpdate(context, mAppWidgetManager, mAppWidgetIds);
 
