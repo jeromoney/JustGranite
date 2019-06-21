@@ -23,11 +23,7 @@ public class MainActivity extends AppCompatActivity implements NetworkReceiver.o
     private GraniteViewModel graniteViewModel;
     private NetworkReceiver receiver = new NetworkReceiver();
 
-    @Override
-    public void onInternetConnected() {
-        // Internet is connected to refresh data.
-        graniteViewModel.loadFlow();
-    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +74,11 @@ public class MainActivity extends AppCompatActivity implements NetworkReceiver.o
         graniteViewModel.loadFlow();
     }
 
+    @Override
+    public void onInternetConnected() {
+        // Internet is connected to refresh data.
+        graniteViewModel.loadFlow();
+    }
     private boolean isOnline() {
         ConnectivityManager connMgr = (ConnectivityManager)
                 getSystemService(Context.CONNECTIVITY_SERVICE);

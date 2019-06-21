@@ -21,6 +21,8 @@
         android:id="@+id/data_freshness"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:contextClickable="false"
+        android:countDown="false"
         android:gravity="center"
         android:textColor="#ffffff"
         android:textSize="16sp"

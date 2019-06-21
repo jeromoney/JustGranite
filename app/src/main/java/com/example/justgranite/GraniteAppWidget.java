@@ -12,6 +12,7 @@ import android.widget.RemoteViews;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Implementation of App Widget functionality.
@@ -22,15 +23,20 @@ public class GraniteAppWidget extends AppWidgetProvider {
 
     private static void updateAppWidget(final Context context, AppWidgetManager appWidgetManager,
                                 int appWidgetId) {
-        // First load flow from memory
-        FlowValue flowValue = SharedPreferencesUtils.getSavedFlowValue(context);
-        if (flowValue != null) setLayout(context, appWidgetManager, appWidgetId, flowValue);
-
         // Set onClick method
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.granite_app_widget);
         views.setOnClickPendingIntent(R.id.appwidget_text, getPendingSelfIntent(context));
         appWidgetManager.updateAppWidget(appWidgetId, views);
 
+        // First load flow from memory
+        FlowValue flowValue = SharedPreferencesUtils.getSavedFlowValue(context);
+        if (flowValue != null){
+            setLayout(context, appWidgetManager, appWidgetId, flowValue);
+            // if data is fresh enough, we're done. save battery and network usage.
+            if (flowValue.isDataFresh()){
+                return;
+            }
+        }
 
         // Get flow info as an async task
         new AsyncTask<Context, Void, FlowValue>(){
@@ -62,9 +68,6 @@ public class GraniteAppWidget extends AppWidgetProvider {
                 }
             }
         }.execute();
-
-
-
     }
 
     @Override
@@ -83,8 +86,6 @@ public class GraniteAppWidget extends AppWidgetProvider {
         // There may be multiple widgets active, so update all of them
         for (int appWidgetId : appWidgetIds) {
             updateAppWidget(context, appWidgetManager, appWidgetId);
-
-
         }
     }
 
@@ -97,6 +98,7 @@ public class GraniteAppWidget extends AppWidgetProvider {
     public void onDisabled(Context context) {
         // Enter relevant functionality for when the last widget is disabled
     }
+
 
     private static PendingIntent getPendingSelfIntent(Context context){
         Intent intent = new Intent(context, GraniteAppWidget.class);

@@ -2,6 +2,8 @@ package com.example.justgranite;
 
 import android.content.Context;
 
+import java.util.concurrent.TimeUnit;
+
 public class FlowValue {
     public Integer mFlow;
     public Long mTimeStamp;
@@ -38,5 +40,10 @@ public class FlowValue {
 
     public Context getmContext(){
         return mContext;
+    }
+
+    public boolean isDataFresh(){
+        return (getmFlow() != null && getmTimeStamp() != null &&
+                System.currentTimeMillis() - getmTimeStamp() < TimeUnit.HOURS.toMillis(1));
     }
 }
