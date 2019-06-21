@@ -3,13 +3,14 @@ package com.example.justgranite;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.util.Log;
 import android.widget.RemoteViews;
-import android.widget.Toast;
 
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -28,7 +29,7 @@ public class GraniteAppWidget extends AppWidgetProvider {
     private static void updateAppWidget(final Context context, AppWidgetManager appWidgetManager,
                                 int appWidgetId) {
         // Set onClick method
-        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.granite_app_widget);
+        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.activity_layout_widget_2column);
         views.setOnClickPendingIntent(R.id.justgranite_widget, getPendingSelfIntent(context));
         appWidgetManager.updateAppWidget(appWidgetId, views);
 
@@ -51,7 +52,7 @@ public class GraniteAppWidget extends AppWidgetProvider {
             return;
         }
 
-
+        // TODO - move to separate class
         // Get flow info as an async task
         new AsyncTask<Context, Void, FlowValue>(){
 
@@ -121,6 +122,20 @@ public class GraniteAppWidget extends AppWidgetProvider {
     }
 
     @Override
+    public void onAppWidgetOptionsChanged(Context context, AppWidgetManager appWidgetManager, int appWidgetId, Bundle newOptions) {
+        // See the dimensions
+        Bundle options = appWidgetManager.getAppWidgetOptions(appWidgetId);
+        // Get min width
+        int minWidth = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);
+
+        appWidgetManager.updateAppWidget(new ComponentName(context, GraniteAppWidget.class), getRemoteViews(context, minWidth));
+        super.onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, newOptions);
+
+
+
+    }
+
+    @Override
     public void onEnabled(Context context) {
         // Enter relevant functionality for when the first widget is created
     }
@@ -150,7 +165,7 @@ public class GraniteAppWidget extends AppWidgetProvider {
             ageStr = TimeFormatterUtil.formatFreshness(flowValue);
         }
         String widgetText = context.getString(R.string.cfs_format);
-        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.granite_app_widget);
+        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.activity_layout_widget_2column);
         views.setTextViewText(R.id.appwidget_text, String.format(widgetText, flowStr));
 
         // Set the data freshness
@@ -160,5 +175,39 @@ public class GraniteAppWidget extends AppWidgetProvider {
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);
     }
+
+    /**
+     * Returns number of cells needed for given size of the widget.
+     *
+     * @param size Widget size in dp.
+     * @return Size in number of cells.
+     */
+    private static int getCellsForSize(int size) {
+        int n = 2;
+        while (70 * n - 30 < size) {
+            ++n;
+        }
+        return n - 1;
+    }
+
+    /**
+     * Determine appropriate view based on row or column provided.
+     *
+     * @param minWidth
+     * @return
+     */
+    private RemoteViews getRemoteViews(Context context, int minWidth) {
+        // First find out rows and columns based on width provided.
+        int columns = getCellsForSize(minWidth);
+        // Now you changing layout base on you column count
+        // In this code from 1 column to 4
+        // you can make code for more columns on your own.
+        switch (columns) {
+            case 1:  return new RemoteViews(context.getPackageName(), R.layout.activity_layout_widget_1column);
+            case 2:  return new RemoteViews(context.getPackageName(), R.layout.activity_layout_widget_2column);
+            default: return new RemoteViews(context.getPackageName(), R.layout.activity_layout_widget_2column);
+        }
+    }
+
 }
 

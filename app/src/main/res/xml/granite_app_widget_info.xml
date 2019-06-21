@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--suppress CheckTagEmptyBody -->
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
-    android:initialKeyguardLayout="@layout/granite_app_widget"
-    android:initialLayout="@layout/granite_app_widget"
+    android:initialKeyguardLayout="@layout/activity_layout_widget_2column"
+    android:initialLayout="@layout/activity_layout_widget_2column"
     android:minWidth="110dp"
-    android:minResizeWidth="110dp"
+    android:minResizeWidth="40dp"
     android:minHeight="40dp"
+    android:maxHeight="40dp"
     android:previewImage="@drawable/justgranite_widget_preview"
-    android:resizeMode="horizontal|vertical"
+    android:resizeMode="horizontal"
     android:updatePeriodMillis="1800000"
     android:widgetCategory="home_screen"></appwidget-provider>
