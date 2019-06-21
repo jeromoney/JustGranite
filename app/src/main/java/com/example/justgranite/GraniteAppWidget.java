@@ -11,6 +11,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.RemoteViews;
+import android.widget.Switch;
 
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -25,67 +26,6 @@ public class GraniteAppWidget extends AppWidgetProvider {
     private static final String MyOnClick = "MyOnclickTag";
     private static AppWidgetManager mAppWidgetManager;
     private static int[] mAppWidgetIds;
-
-    private static void updateAppWidget(final Context context, AppWidgetManager appWidgetManager,
-                                int appWidgetId) {
-        // Set onClick method
-        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.activity_layout_widget_2column);
-        views.setOnClickPendingIntent(R.id.justgranite_widget, getPendingSelfIntent(context));
-        appWidgetManager.updateAppWidget(appWidgetId, views);
-
-        // First load flow from memory
-        FlowValue flowValue = SharedPreferencesUtil.getSavedFlowValue(context);
-        if (flowValue != null && flowValue.isDataGood()){
-            setLayout(context, appWidgetManager, appWidgetId, flowValue);
-            // if data is fresh enough, we're done. save battery and network usage.
-            if (flowValue.isDataFresh()){
-                return;
-            }
-        }
-        else {
-            // fill widget with no data display
-            setLayout(context, appWidgetManager, appWidgetId, null);
-        }
-        if (!InternetUtil.isOnline(context)){
-            // No internet, so nothing to be done.
-            Log.d(TAG, "no internet");
-            return;
-        }
-
-        // TODO - move to separate class
-        // Get flow info as an async task
-        new AsyncTask<Context, Void, FlowValue>(){
-
-            @Override
-            protected FlowValue doInBackground(Context... contexts) {
-                FlowValue flowValue;
-                DownloadXmlTask myTask = new DownloadXmlTask(null);
-                try {
-                    flowValue = myTask.loadXmlFromNetwork(context.getString(R.string.granite_url));
-                    flowValue.setmContext(context);
-                    return flowValue;
-                } catch (XmlPullParserException e) {
-                    e.printStackTrace();
-                    return null;
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    return null;
-                }
-            }
-
-            @Override
-            protected void onPostExecute(FlowValue flowValue) {
-                super.onPostExecute(flowValue);
-                // Construct the RemoteViews object
-                // if flowValue is null, the internet is probably off so don't update value.
-                if (flowValue != null && flowValue.isDataGood()) {
-                    setLayout(context, appWidgetManager, appWidgetId, flowValue);
-                    // Save value to shared preferences
-                    SharedPreferencesUtil.setSavedFlowValue(context, flowValue);
-                }
-            }
-        }.execute();
-    }
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -117,7 +57,8 @@ public class GraniteAppWidget extends AppWidgetProvider {
 
         // There may be multiple widgets active, so update all of them
         for (int appWidgetId : appWidgetIds) {
-            updateAppWidget(context, appWidgetManager, appWidgetId);
+            Bundle options=appWidgetManager.getAppWidgetOptions(appWidgetId);
+            onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId,options);
         }
     }
 
@@ -127,8 +68,55 @@ public class GraniteAppWidget extends AppWidgetProvider {
         Bundle options = appWidgetManager.getAppWidgetOptions(appWidgetId);
         // Get min width
         int minWidth = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);
+        RemoteViews views = getRemoteViews(context, minWidth);
+        appWidgetManager.updateAppWidget(new ComponentName(context, GraniteAppWidget.class), views);
 
-        appWidgetManager.updateAppWidget(new ComponentName(context, GraniteAppWidget.class), getRemoteViews(context, minWidth));
+        // set on click handler
+        views.setOnClickPendingIntent(R.id.justgranite_widget, getPendingSelfIntent(context));
+        appWidgetManager.updateAppWidget(appWidgetId, views);
+
+        // First load flow from memory
+        FlowValue flowValue = SharedPreferencesUtil.getSavedFlowValue(context);
+        int cellWidth = getCellsForSize(minWidth);
+        setLayout(context, appWidgetManager, appWidgetId, flowValue, views, cellWidth);
+        if (!InternetUtil.isOnline(context) || flowValue.isDataFresh()){
+            // If there is no internet or the data is fresh, there is nothing to be done.
+            return;
+        }
+
+        // TODO - move to separate class
+        // Get flow info as an async task
+        new AsyncTask<Context, Void, FlowValue>(){
+
+            @Override
+            protected FlowValue doInBackground(Context... contexts) {
+                FlowValue flowValue;
+                DownloadXmlTask myTask = new DownloadXmlTask(null);
+                try {
+                    flowValue = myTask.loadXmlFromNetwork(context.getString(R.string.granite_url));
+                    flowValue.setmContext(context);
+                    return flowValue;
+                } catch (XmlPullParserException e) {
+                    e.printStackTrace();
+                    return null;
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    return null;
+                }
+            }
+
+            @Override
+            protected void onPostExecute(FlowValue flowValue) {
+                super.onPostExecute(flowValue);
+                // Construct the RemoteViews object
+                // if flowValue is null, the internet is probably off so don't update value.
+                if (flowValue != null && flowValue.isDataGood()) {
+                    setLayout(context, appWidgetManager, appWidgetId, flowValue, views, cellWidth);
+                    // Save value to shared preferences
+                    SharedPreferencesUtil.setSavedFlowValue(context, flowValue);
+                }
+            }
+        }.execute();
         super.onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, newOptions);
 
 
@@ -153,7 +141,7 @@ public class GraniteAppWidget extends AppWidgetProvider {
     }
 
     private static void setLayout(final Context context, AppWidgetManager appWidgetManager,
-                                        int appWidgetId, FlowValue flowValue){
+                                        int appWidgetId, FlowValue flowValue, RemoteViews views, int cellWidth){
         String flowStr;
         String ageStr;
         if (flowValue == null){
@@ -165,12 +153,16 @@ public class GraniteAppWidget extends AppWidgetProvider {
             ageStr = TimeFormatterUtil.formatFreshness(flowValue);
         }
         String widgetText = context.getString(R.string.cfs_format);
-        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.activity_layout_widget_2column);
-        views.setTextViewText(R.id.appwidget_text, String.format(widgetText, flowStr));
+        switch(cellWidth){
+            case 1:
+                views.setTextViewText(R.id.appwidget_text, flowValue.mFlow.toString());
+                break;
 
-        // Set the data freshness
-
-        views.setTextViewText(R.id.data_freshness, ageStr);
+            default:
+                views.setTextViewText(R.id.appwidget_text, String.format(widgetText, flowStr));
+                views.setTextViewText(R.id.data_freshness, ageStr);
+                break;
+        }
 
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);
