@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "707970598585",
+    "firebase_url": "https://justgranitetestpackage.firebaseio.com",
+    "project_id": "justgranitetestpackage",
+    "storage_bucket": "justgranitetestpackage.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:707970598585:android:ed3229ba8205e72b",
+        "android_client_info": {
+          "package_name": "com.example.justgranite"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "707970598585-su9qqjig5d2m45fsqvgbrlvbouencmf0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCNhjf2p5aQPLuGvOFIP4syGuG-4t7gjCo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "707970598585-su9qqjig5d2m45fsqvgbrlvbouencmf0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
