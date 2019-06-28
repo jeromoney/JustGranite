@@ -28,9 +28,7 @@ public class MainActivity extends AppCompatActivity implements NetworkReceiver.o
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
-
+        // Setup my ViewModel
         graniteViewModel = ViewModelProviders.of(this)
                 .get(GraniteViewModel.class);
         graniteViewModel.setmContext(this);

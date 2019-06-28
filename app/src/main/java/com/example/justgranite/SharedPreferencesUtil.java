@@ -34,4 +34,19 @@ class SharedPreferencesUtil {
             editor.apply();
         }
     }
+
+    public static int getSavedSection(Context context){
+        SharedPreferences sharedPreferences =
+                PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPreferences.getInt("section", 0);
+    }
+
+    public static void  setSavedSection(Context context, int section){
+        // Store values in shared preferences
+        SharedPreferences sharedPreferences =
+                PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putLong("section", section);
+        editor.apply();
+    }
 }

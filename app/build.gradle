@@ -50,6 +50,9 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
     annotationProcessor "androidx.lifecycle:lifecycle-compiler:$lifecycle_version"
 
+    implementation 'com.google.code.gson:gson:2.8.5'
+
+
     // Core library
     androidTestImplementation 'androidx.test:core:1.2.0'
 
