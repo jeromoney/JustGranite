@@ -1,11 +1,9 @@
 package com.example.justgranite;
 
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -18,7 +16,8 @@ import androidx.lifecycle.ViewModelProviders;
 import com.example.justgranite.databinding.ActivityMainBinding;
 
 
-public class MainActivity extends AppCompatActivity implements NetworkReceiver.onInternetConnectedListener {
+public class MainActivity extends AppCompatActivity implements NetworkReceiver.onInternetConnectedListener,
+RiverSectionFragment.OnFragmentInteractionListener{
 
     private GraniteViewModel graniteViewModel;
     private NetworkReceiver receiver = new NetworkReceiver();
@@ -83,4 +82,8 @@ public class MainActivity extends AppCompatActivity implements NetworkReceiver.o
         startActivity(intent);
     }
 
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
+    }
 }
