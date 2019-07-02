@@ -7,4 +7,10 @@
     <string name="cfs_format">%s cfs</string>
     <string name="granite_gauge_url">https://waterdata.usgs.gov/monitoring-location/07087050/</string>
     <string name="ageDefault">tap to update</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="numbers">NUMBERS</string>
+    <string name="browns">BROWNS</string>
+    <string name="royal_gorge">ROYAL GORGE</string>
 </resources>

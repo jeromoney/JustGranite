@@ -58,7 +58,7 @@ public class TabNavigationFragment extends Fragment {
         public Fragment getItem(int position) {
             Fragment fragment = new RiverSectionFragment();
             Bundle args = new Bundle();
-            // TODO - put arguments here
+            args.putInt("position", position);
             fragment.setArguments(args);
             return fragment;
         }

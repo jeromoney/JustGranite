@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
+import androidx.databinding.ViewDataBinding;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.example.justgranite.databinding.ActivityMainBinding;
@@ -31,9 +32,9 @@ RiverSectionFragment.OnFragmentInteractionListener{
         graniteViewModel = ViewModelProviders.of(this)
                 .get(GraniteViewModel.class);
         graniteViewModel.setmContext(this);
-        ActivityMainBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+        ViewDataBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         binding.setLifecycleOwner(this);
-        binding.setGraniteviewmodel(graniteViewModel);
+//        binding.setGraniteviewmodel(graniteViewModel);
     }
 
     @Override
