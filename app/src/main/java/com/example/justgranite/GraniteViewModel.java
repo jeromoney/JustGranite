@@ -23,7 +23,7 @@ public class GraniteViewModel extends ViewModel {
                     if (flowValue == null || flowValue.mFlow == 0) return "---";
                     else return flowValue.mFlow.toString();}
         );
-        mFlowValue.setValue(new FlowValue(0, (long) 0, null));
+        mFlowValue.setValue(new FlowValue(0, (long) 0, null, null));
         mAgeStr = Transformations.map(
                 mFlowValue,
                 TimeFormatterUtil::formatFreshness);

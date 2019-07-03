@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 
 /**
@@ -60,14 +61,6 @@ public class RiverSectionFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        int position = 0;
-        if (getArguments() != null) {
-            position = getArguments().getInt("position");
-        }
-        RiverSection riverSection = RiverSectionJsonUtil.getRiverSection(getContext(), position);
-
-
-
     }
 
     @Override
@@ -76,13 +69,28 @@ public class RiverSectionFragment extends Fragment {
         // Inflate the layout for this fragment
         ViewDataBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_river_section, container, false);
         View view = binding.getRoot();
+        // Grab out river section specific data
         int position = 0;
         if (getArguments() != null) {
             position = getArguments().getInt("position");
         }
-        RiverSection riverSection = RiverSectionJsonUtil.getRiverSection(getContext(), position);
 
+        RiverSection riverSection = RiverSectionJsonUtil.getRiverSection(getContext(), position);
         binding.setVariable(BR.riversection, riverSection);
+        //TODO - switch to databinding
+        ImageView imageView = view.findViewById(R.id.riverSectionImage);
+        switch (riverSection.getSection_name()){
+            case "Numbers":
+                imageView.setImageResource(R.drawable.numbers);
+                break;
+            case "Browns":
+                imageView.setImageResource(R.drawable.browns);
+                break;
+            case "The Gorge":
+                imageView.setImageResource(R.drawable.royalgorge);
+                break;
+            default:
+        }
         return view;
     }
 

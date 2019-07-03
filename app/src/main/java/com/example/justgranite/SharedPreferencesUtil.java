@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import java.util.ArrayList;
+
 class SharedPreferencesUtil {
     public static FlowValue getSavedFlowValue(Context context){
         SharedPreferences sharedPreferences =
@@ -17,10 +19,22 @@ class SharedPreferencesUtil {
                 return null;
             }
             else {
-                return new FlowValue(flow, time, context);
+                return new FlowValue(flow, time, null, context);
             }
         }
         else return null;
+    }
+
+    public static void setSavedFlowValues(Context context, ArrayList<FlowValue> flowValues){
+        SharedPreferences sharedPreferences =
+                PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        for (FlowValue flowValue: flowValues) {
+            if (flowValue.isDataGood()) {
+
+            }
+        }
+        editor.apply();
     }
 
     public static void  setSavedFlowValue(Context context, FlowValue flowValue){

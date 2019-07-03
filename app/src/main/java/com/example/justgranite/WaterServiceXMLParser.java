@@ -57,7 +57,7 @@ class WaterServiceXMLParser {
                 for (int i=0;i<3;i++) parser.next();
                 String flowText = parser.getText();
                 flow = Integer.valueOf(flowText);
-                return new FlowValue(flow, timeInMilliseconds, null);
+                return new FlowValue(flow, timeInMilliseconds, null, null);
             }
 
             eventType = parser.next();

@@ -14,6 +14,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.example.justgranite.Repository.StreamRepository;
 import com.example.justgranite.databinding.ActivityMainBinding;
 
 
@@ -35,6 +36,10 @@ RiverSectionFragment.OnFragmentInteractionListener{
         ViewDataBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         binding.setLifecycleOwner(this);
 //        binding.setGraniteviewmodel(graniteViewModel);
+
+
+        // delete this below
+        StreamRepository.updateStreamValues(getApplicationContext());
     }
 
     @Override

@@ -5,13 +5,15 @@ import android.content.Context;
 import java.util.concurrent.TimeUnit;
 
 public class FlowValue {
+    public String mGaugeId;
     public Integer mFlow;
     public Long mTimeStamp;
     private Context mContext;
 
-    public FlowValue(int flow, Long timeStamp, Context context){
+    public FlowValue(int flow, Long timeStamp, String gaugeId, Context context){
         setmFlow(flow);
         setmDate(timeStamp);
+        setmGaugeId(gaugeId);
         setmContext(context);
     }
 
@@ -23,7 +25,9 @@ public class FlowValue {
         mFlow = flow;
     }
 
-
+    public void setmGaugeId(String gaugeId){
+        mGaugeId = gaugeId;
+    }
     public Integer getmFlow() {
         return mFlow;
     }
