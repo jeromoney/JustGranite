@@ -7,11 +7,13 @@ import android.os.Bundle;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 
 /**
@@ -27,6 +29,11 @@ public class RiverSectionFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private static String mGaugeId;
+
+    private GraniteViewModel model;
+
+
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -61,6 +68,8 @@ public class RiverSectionFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        model = ViewModelProviders.of(getActivity()).get(GraniteViewModel.class);
+
     }
 
     @Override
@@ -69,6 +78,12 @@ public class RiverSectionFragment extends Fragment {
         // Inflate the layout for this fragment
         ViewDataBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_river_section, container, false);
         View view = binding.getRoot();
+        model.getmStreamValues().observe(getViewLifecycleOwner(), item -> {
+            TextView a = (TextView) this.getView().findViewById(R.id.section_flow);
+            a.setText(item.get(mGaugeId).getmFlow().toString());
+
+        });
+
         // Grab out river section specific data
         int position = 0;
         if (getArguments() != null) {
@@ -76,6 +91,7 @@ public class RiverSectionFragment extends Fragment {
         }
 
         RiverSection riverSection = RiverSectionJsonUtil.getRiverSection(getContext(), position);
+        mGaugeId = riverSection.getId();
         binding.setVariable(BR.riversection, riverSection);
         //TODO - switch to databinding
         ImageView imageView = view.findViewById(R.id.riverSectionImage);

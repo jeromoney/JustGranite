@@ -7,15 +7,27 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 
+import com.example.justgranite.RemoteDataSource.StreamValue;
+import com.example.justgranite.Repository.StreamRepository;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+
 public class GraniteViewModel extends ViewModel {
 
     public final LiveData<String> mFlowStr;
     public final MutableLiveData<FlowValue> mFlowValue;
     public final LiveData<String> mAgeStr;
+    public final MutableLiveData<HashMap<String,FlowValue>> mStreamValues;
+
     private Context mContext;
 
 
     public GraniteViewModel(){
+        // create a list of livedata objects for each section
+        mStreamValues = new MutableLiveData<>();
+        mStreamValues.setValue(new HashMap<String,FlowValue>());
+
         mFlowValue = new MutableLiveData<>();
         mFlowStr = Transformations.map(
                 mFlowValue,
@@ -34,11 +46,32 @@ public class GraniteViewModel extends ViewModel {
         // Now that I have the context I can load values in shared preferences
        FlowValue flowValue = SharedPreferencesUtil.getSavedFlowValue(context);
        if (flowValue != null) setmFlowValue(flowValue);
+
+       // set StreamValues
+        TinyDB tinyDB = new TinyDB(context);
+        HashMap<String,FlowValue> flowValues = new  HashMap<String,FlowValue>(){};
+
+        ArrayList<String> riverIds = RiverSectionJsonUtil.getRiverIDs(context);
+        for (String riverId : riverIds){
+            FlowValue value = new FlowValue(0,null,riverId,context);
+            // check if saved value loaded before
+            if (tinyDB.getAll().containsKey(riverId)){
+                FlowValue savedFloadValue = tinyDB.getObject(riverId, FlowValue.class);
+                value.setmFlow(savedFloadValue.getmFlow());
+                value.setmTimeStamp(savedFloadValue.getmTimeStamp());
+            }
+            flowValues.put(riverId, value);
+            }
+        mStreamValues.setValue(flowValues);
     }
 
     private MutableLiveData<FlowValue> getmFlowValue(){
         return mFlowValue;
     }
+
+    public LiveData<HashMap<String,FlowValue>> getmStreamValues() {
+        return mStreamValues;
+    };
 
     public void setmFlowValue(FlowValue flowValue){
         if (flowValue == null) return;
@@ -47,7 +80,14 @@ public class GraniteViewModel extends ViewModel {
         SharedPreferencesUtil.setSavedFlowValue(mContext, flowValue);
     }
 
+    public void setmStreamValues(HashMap<String, FlowValue> flowValueHashMap){
+        mStreamValues.setValue(flowValueHashMap);
+    }
+
     public void loadFlow(){
+        new StreamRepository(this, mContext);
+
+
         if (!getmFlowValue().getValue().isDataFresh()) {
             new DownloadXmlTask(this).execute(mContext.getString(R.string.granite_url));
         }

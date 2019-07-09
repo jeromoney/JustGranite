@@ -4,7 +4,7 @@ import android.content.Context;
 
 import java.util.concurrent.TimeUnit;
 
-public class FlowValue {
+public class FlowValue{
     public String mGaugeId;
     public Integer mFlow;
     public Long mTimeStamp;
@@ -31,11 +31,16 @@ public class FlowValue {
     public Integer getmFlow() {
         return mFlow;
     }
-
+    public String getmGaugeId(){ return mGaugeId;}
     public Long getmTimeStamp(){
         return mTimeStamp;
     }
-
+    public void setmFlow(Integer flow){
+        mFlow = flow;
+    }
+    public void setmTimeStamp(Long timeStamp){
+        mTimeStamp = timeStamp;
+    }
     // It seems hokey to have to store context here but need it to access string resources in the
     // transformations map
     public void setmContext(Context context){

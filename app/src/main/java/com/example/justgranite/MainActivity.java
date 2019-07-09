@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelStore;
 
 import com.example.justgranite.Repository.StreamRepository;
 import com.example.justgranite.databinding.ActivityMainBinding;
@@ -30,16 +31,13 @@ RiverSectionFragment.OnFragmentInteractionListener{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // Setup my ViewModel
+
         graniteViewModel = ViewModelProviders.of(this)
                 .get(GraniteViewModel.class);
         graniteViewModel.setmContext(this);
         ViewDataBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         binding.setLifecycleOwner(this);
 //        binding.setGraniteviewmodel(graniteViewModel);
-
-
-        // delete this below
-        StreamRepository.updateStreamValues(getApplicationContext());
     }
 
     @Override
