@@ -1,12 +1,10 @@
 package com.example.justgranite;
 
-import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -41,11 +39,6 @@ public class GraniteAppWidget extends AppWidgetProvider {
             // User clicked on widget so lets update widget.
             onUpdate(context, mAppWidgetManager, mAppWidgetIds);
 
-            // launch web page
-            String URL = "https://waterdata.usgs.gov/monitoring-location/07087050/";
-            Intent newIntent = new Intent(Intent.ACTION_VIEW);
-            newIntent.setData(Uri.parse(URL));
-            context.startActivity(newIntent);
         }
     }
 
@@ -70,12 +63,9 @@ public class GraniteAppWidget extends AppWidgetProvider {
         RemoteViews views = getRemoteViews(context, minWidth);
         appWidgetManager.updateAppWidget(new ComponentName(context, GraniteAppWidget.class), views);
 
-        // set on click handler
-        views.setOnClickPendingIntent(R.id.justgranite_widget, getPendingSelfIntent(context));
-        appWidgetManager.updateAppWidget(appWidgetId, views);
-
         // First load flow from memory
-        FlowValue flowValue = SharedPreferencesUtil.getSavedFlowValue(context);
+        String gauge = getPrefGauge(context);
+        FlowValue flowValue = getSavedFlowValue(gauge, context);
         int cellWidth = getCellsForSize(minWidth);
         setLayout(context, appWidgetManager, appWidgetId, flowValue, views, cellWidth);
         if (!InternetUtil.isOnline(context) || flowValue.isDataFresh()){
@@ -122,6 +112,8 @@ public class GraniteAppWidget extends AppWidgetProvider {
 
     }
 
+
+
     @Override
     public void onEnabled(Context context) {
         // Enter relevant functionality for when the first widget is created
@@ -132,12 +124,6 @@ public class GraniteAppWidget extends AppWidgetProvider {
         // Enter relevant functionality for when the last widget is disabled
     }
 
-
-    private static PendingIntent getPendingSelfIntent(Context context){
-        Intent intent = new Intent(context, GraniteAppWidget.class);
-        intent.setAction(MyOnClick);
-        return PendingIntent.getBroadcast(context, 0, intent, 0);
-    }
 
     private static void setLayout(final Context context, AppWidgetManager appWidgetManager,
                                         int appWidgetId, FlowValue flowValue, RemoteViews views, int cellWidth){
@@ -199,6 +185,23 @@ public class GraniteAppWidget extends AppWidgetProvider {
             default: return new RemoteViews(context.getPackageName(), R.layout.activity_layout_widget_2column);
         }
     }
+    private String getPrefGauge(Context context){
+        TinyDB tinyDB = new TinyDB(context);
+        String gauge = tinyDB.getString("preferred_gauge");
+        if (gauge.equals("")) gauge = context.getString(R.string.granite_gauge_id);
+        return gauge;
+    }
 
+    private FlowValue getSavedFlowValue(String gauge, Context context) {
+        TinyDB tinyDB = new TinyDB(context);
+        FlowValue flowValue = tinyDB.getObject(gauge, FlowValue.class);
+        if (flowValue == null){
+            flowValue = new FlowValue(0,(long) 0, gauge, context);
+        }
+        else if (flowValue.getmContext() == null){
+            flowValue.setmContext(context);
+        }
+        return flowValue;
+    }
 }
 
