@@ -7,7 +7,6 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 
-import com.example.justgranite.RemoteDataSource.StreamValue;
 import com.example.justgranite.Repository.StreamRepository;
 
 import java.util.ArrayList;

@@ -11,7 +11,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.RemoteViews;
-import android.widget.Switch;
 
 import org.xmlpull.v1.XmlPullParserException;
 
