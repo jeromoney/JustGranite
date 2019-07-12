@@ -4,7 +4,7 @@ import android.content.res.Resources;
 
 import java.util.concurrent.TimeUnit;
 
-class TimeFormatterUtil {
+public class TimeFormatterUtil {
 
     public static String formatFreshness(FlowValue flowValue){
         if (flowValue == null || flowValue.mFlow == 0) return "";

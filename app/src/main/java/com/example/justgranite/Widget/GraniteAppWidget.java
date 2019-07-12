@@ -1,4 +1,4 @@
-package com.example.justgranite;
+package com.example.justgranite.Widget;
 
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
@@ -10,9 +10,16 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.RemoteViews;
 
-import org.xmlpull.v1.XmlPullParserException;
 
-import java.io.IOException;
+import com.example.justgranite.FlowValue;
+import com.example.justgranite.InternetUtil;
+import com.example.justgranite.R;
+import com.example.justgranite.RiverSectionJsonUtil;
+import com.example.justgranite.TinyDB;
+
+import java.util.ArrayList;
+
+import static com.example.justgranite.Widget.GraniteAppWidgetUtils.setLayout;
 
 /**
  * Implementation of App Widget functionality.
@@ -31,7 +38,6 @@ public class GraniteAppWidget extends AppWidgetProvider {
             if (!InternetUtil.isOnline(context)){
                 // If there is no internet, nothing can be done.
                 Log.d(TAG, "no internet");
-
                 return;
             }
 
@@ -41,15 +47,15 @@ public class GraniteAppWidget extends AppWidgetProvider {
 
         }
     }
-
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         mAppWidgetIds = appWidgetIds;
         mAppWidgetManager = appWidgetManager;
 
+
         // There may be multiple widgets active, so update all of them
         for (int appWidgetId : appWidgetIds) {
-            Bundle options=appWidgetManager.getAppWidgetOptions(appWidgetId);
+            Bundle options = appWidgetManager.getAppWidgetOptions(appWidgetId);
             onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId,options);
         }
     }
@@ -70,45 +76,18 @@ public class GraniteAppWidget extends AppWidgetProvider {
         setLayout(context, appWidgetManager, appWidgetId, flowValue, views, cellWidth);
         if (!InternetUtil.isOnline(context) || flowValue.isDataFresh()){
             // If there is no internet or the data is fresh, there is nothing to be done.
-            return;
+            //return;
         }
 
-        // TODO - move to separate class
-        // Get flow info as an async task
-        new AsyncTask<Context, Void, FlowValue>(){
+        ArrayList<String> riverIDs = RiverSectionJsonUtil.getRiverIDs(context); // Should this be run on the main thread?
+        new GraniteAppWidgetAsyncTask(context, riverIDs, gauge, appWidgetManager, appWidgetId, views, cellWidth).execute();
 
-            @Override
-            protected FlowValue doInBackground(Context... contexts) {
-                FlowValue flowValue;
-                DownloadXmlTask myTask = new DownloadXmlTask(null);
-                try {
-                    flowValue = myTask.loadXmlFromNetwork(context.getString(R.string.granite_url));
-                    flowValue.setmContext(context);
-                    return flowValue;
-                } catch (XmlPullParserException e) {
-                    e.printStackTrace();
-                    return null;
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    return null;
-                }
-            }
-
-            @Override
-            protected void onPostExecute(FlowValue flowValue) {
-                super.onPostExecute(flowValue);
                 // Construct the RemoteViews object
                 // if flowValue is null, the internet is probably off so don't update value.
-                if (flowValue != null && flowValue.isDataGood()) {
-                    setLayout(context, appWidgetManager, appWidgetId, flowValue, views, cellWidth);
+       //         if (flowValue != null && flowValue.isDataGood()) {
+         //           setLayout(context, appWidgetManager, appWidgetId, flowValue, views, cellWidth);
                     // Save value to shared preferences
-                    SharedPreferencesUtil.setSavedFlowValue(context, flowValue);
-                }
-            }
-        }.execute();
-        super.onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, newOptions);
-
-
+             super.onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, newOptions);
 
     }
 
@@ -125,33 +104,7 @@ public class GraniteAppWidget extends AppWidgetProvider {
     }
 
 
-    private static void setLayout(final Context context, AppWidgetManager appWidgetManager,
-                                        int appWidgetId, FlowValue flowValue, RemoteViews views, int cellWidth){
-        String flowStr;
-        String ageStr;
-        if (flowValue == null){
-            flowStr = context.getString(R.string.flowDefault);
-            ageStr = context.getString(R.string.ageDefault);
-        }
-        else {
-            flowStr = flowValue.getmFlow().toString();
-            ageStr = TimeFormatterUtil.formatFreshness(flowValue);
-        }
-        String widgetText = context.getString(R.string.cfs_format);
-        switch(cellWidth){
-            case 1:
-                views.setTextViewText(R.id.appwidget_text, flowValue.mFlow.toString());
-                break;
 
-            default:
-                views.setTextViewText(R.id.appwidget_text, String.format(widgetText, flowStr));
-                views.setTextViewText(R.id.data_freshness, ageStr);
-                break;
-        }
-
-        // Instruct the widget manager to update the widget
-        appWidgetManager.updateAppWidget(appWidgetId, views);
-    }
 
     /**
      * Returns number of cells needed for given size of the widget.
