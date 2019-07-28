@@ -47,11 +47,7 @@ public class GraniteAppWidgetAsyncTask extends com.example.justgranite.DownloadA
     @Override
     protected Void doInBackground(Void... aVoid) {
         if (riverIDs.size() == 0) return null;
-        Map<String, String> options = new HashMap<>();
-        options.put("parameterCd","00060"); //parameterCd=00060
-        options.put("format","json"); //format=json
-        String riverIDsStr = android.text.TextUtils.join(",", riverIDs); //there is probably a native retrofit way to do this.
-        options.put("site",riverIDsStr);//sites=07087050,07094500,07091200
+        Map<String, String> options = super.getOptions();
 
         StreamValueService service = StreamRetrofitClientInstance.getRetrofitInstance().create(StreamValueService.class);
         Call<StreamValue> call = service.getStreamsValues(options);

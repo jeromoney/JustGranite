@@ -4,9 +4,6 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
     <data>
         <import type="android.view.View" />
-        <variable
-            name="graniteviewmodel"
-            type="com.example.justgranite.GraniteViewModel" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

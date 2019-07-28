@@ -21,7 +21,6 @@ import com.google.android.material.tabs.TabLayout;
 
 public class TabNavigationFragment extends Fragment {
 
-    private TabNavigationViewModel mViewModel;
     RiverSectionPagerAdapter riverSectionPagerAdapter;
     ViewPager viewPager;
 
@@ -79,8 +78,6 @@ public class TabNavigationFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mViewModel = ViewModelProviders.of(this).get(TabNavigationViewModel.class);
-        // TODO: Use the ViewModel
     }
 
 

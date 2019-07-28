@@ -6,10 +6,7 @@
             name="riversection"
             type="com.example.justgranite.RiverSection"
             />
-        <variable
-            name="graniteviewmodel"
-            type="com.example.justgranite.GraniteViewModel" />
-    </data>
+         </data>
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

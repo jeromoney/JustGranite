@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import androidx.fragment.app.Fragment;
@@ -29,7 +30,7 @@ public class RiverSectionFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    private static String mGaugeId;
+    private String mGaugeId;
 
     private GraniteViewModel model;
 
@@ -73,8 +74,17 @@ public class RiverSectionFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        // Grab out river section specific data
+        int position = 0;
+        if (getArguments() != null) {
+            position = getArguments().getInt("position");
+        }
+
+        RiverSection riverSection = RiverSectionJsonUtil.getRiverSection(getContext(), position);
+        mGaugeId = riverSection.getId();
+
         // Inflate the layout for this fragment
         ViewDataBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_river_section, container, false);
         View view = binding.getRoot();
@@ -84,14 +94,7 @@ public class RiverSectionFragment extends Fragment {
 
         });
 
-        // Grab out river section specific data
-        int position = 0;
-        if (getArguments() != null) {
-            position = getArguments().getInt("position");
-        }
 
-        RiverSection riverSection = RiverSectionJsonUtil.getRiverSection(getContext(), position);
-        mGaugeId = riverSection.getId();
         binding.setVariable(BR.riversection, riverSection);
         //TODO - switch to databinding
         ImageView imageView = view.findViewById(R.id.riverSectionImage);
