@@ -42,10 +42,6 @@ public class GraniteViewModel extends ViewModel {
 
     public void setmContext(Context context){
         mContext = context;
-        // Now that I have the context I can load values in shared preferences
-       FlowValue flowValue = SharedPreferencesUtil.getSavedFlowValue(context);
-       if (flowValue != null) setmFlowValue(flowValue);
-
        // set StreamValues
         TinyDB tinyDB = new TinyDB(context);
         HashMap<String,FlowValue> flowValues = new  HashMap<String,FlowValue>(){};
@@ -72,23 +68,13 @@ public class GraniteViewModel extends ViewModel {
         return mStreamValues;
     };
 
-    public void setmFlowValue(FlowValue flowValue){
-        if (flowValue == null) return;
-        if (flowValue.getmContext() == null) flowValue.setmContext(mContext);
-        mFlowValue.setValue(flowValue);
-        SharedPreferencesUtil.setSavedFlowValue(mContext, flowValue);
-    }
-
     public void setmStreamValues(HashMap<String, FlowValue> flowValueHashMap){
         mStreamValues.setValue(flowValueHashMap);
     }
 
     public void loadFlow(){
-        new StreamRepository(this, mContext);
-
-
         if (!getmFlowValue().getValue().isDataFresh()) {
-            new DownloadXmlTask(this).execute(mContext.getString(R.string.granite_url));
+            new StreamRepository(this, mContext);
         }
     }
 }

@@ -27,7 +27,7 @@ task clean(type: Delete) {
 }
 buildscript {
     dependencies {
-        // Add this line
-        classpath 'com.google.gms:google-services:4.3.0'
+        // Add this line - downgraded to 4.2.0 to avoid obsolete warning
+        classpath 'com.google.gms:google-services:4.2.0'
     }
 }
