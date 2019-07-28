@@ -18,7 +18,6 @@ public class StreamRepository {
 
     private static void updateStreamValues(Context context){
         ArrayList<String> riverIDs = RiverSectionJsonUtil.getRiverIDs(context); // Should this be run on the main thread?
-        StreamRepositoryAsyncTaskParams params = new StreamRepositoryAsyncTaskParams(context, riverIDs, mViewModel);
-        new StreamRepositoryAsyncTask().execute(params);
+        new StreamRepositoryAsyncTask(context, riverIDs, mViewModel).execute();
     }
 }
