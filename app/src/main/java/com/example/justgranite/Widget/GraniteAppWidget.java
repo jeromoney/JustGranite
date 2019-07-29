@@ -14,6 +14,7 @@ import android.widget.RemoteViews;
 import com.example.justgranite.FlowValue;
 import com.example.justgranite.InternetUtil;
 import com.example.justgranite.R;
+import com.example.justgranite.RiverSection;
 import com.example.justgranite.RiverSectionJsonUtil;
 import com.example.justgranite.TinyDB;
 
@@ -140,9 +141,11 @@ public class GraniteAppWidget extends AppWidgetProvider {
     }
     private String getPrefGauge(Context context){
         TinyDB tinyDB = new TinyDB(context);
-        String gauge = tinyDB.getString("preferred_gauge");
-        if (gauge.equals("")) gauge = context.getString(R.string.granite_gauge_id);
-        return gauge;
+        int gaugeInt = tinyDB.getInt("defaultGauge");
+        RiverSection section = RiverSectionJsonUtil.getRiverSection(context, gaugeInt);
+        String gaugeStr = section.getId();
+        if (gaugeStr.equals("")) gaugeStr = context.getString(R.string.granite_gauge_id);
+        return gaugeStr;
     }
 
     private FlowValue getSavedFlowValue(String gauge, Context context) {

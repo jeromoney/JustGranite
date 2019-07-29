@@ -1,6 +1,8 @@
 package com.example.justgranite;
 
 
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
@@ -13,10 +15,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.lifecycle.ViewModelStore;
 
-import com.example.justgranite.Repository.StreamRepository;
-import com.example.justgranite.databinding.ActivityMainBinding;
+import com.example.justgranite.Widget.GraniteAppWidget;
 
 
 public class MainActivity extends AppCompatActivity implements NetworkReceiver.onInternetConnectedListener,
@@ -37,7 +37,19 @@ RiverSectionFragment.OnFragmentInteractionListener{
         graniteViewModel.setmContext(this);
         ViewDataBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         binding.setLifecycleOwner(this);
-//        binding.setGraniteviewmodel(graniteViewModel);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // update the widget with the selected gauge
+        Intent intent = new Intent(this, GraniteAppWidget.class);
+        intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+        int[] ids = AppWidgetManager.getInstance(getApplication())
+                .getAppWidgetIds(new ComponentName(getApplication(), GraniteAppWidget.class));
+        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
+        sendBroadcast(intent);
+
     }
 
     @Override
@@ -64,6 +76,8 @@ RiverSectionFragment.OnFragmentInteractionListener{
         if (receiver != null) {
             this.unregisterReceiver(receiver);
         }
+
+
     }
 
 
@@ -78,14 +92,7 @@ RiverSectionFragment.OnFragmentInteractionListener{
         // Internet is connected to refresh data.
         graniteViewModel.loadFlow();
     }
-
-    public void launchGauge(View view){
-        String URL = getApplicationContext().getString(R.string.granite_gauge_url);
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setData(Uri.parse(URL));
-        startActivity(intent);
-    }
-
+    
     @Override
     public void onFragmentInteraction(Uri uri) {
 
