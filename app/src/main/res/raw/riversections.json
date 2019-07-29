@@ -1,0 +1,21 @@
+[
+  {
+    "id": "07087050",
+    "section_name": "Numbers",
+    "gauge_name": "Arkansas River Below Granite",
+    "acronym": "n",
+    "image": "drawable/numbers"
+  }, {
+    "id": "07091200",
+    "section_name": "Browns",
+    "gauge_name": "Arkansas River near Nathrop",
+    "acronym": "b",
+    "image": "drawable/browns"
+  }, {
+    "id": "07094500",
+    "section_name": "The Gorge",
+    "gauge_name": "Arkansas River at Parkdale",
+    "acronym": "r",
+    "image": "drawable/royalgorge"
+  }
+]

@@ -92,7 +92,7 @@ RiverSectionFragment.OnFragmentInteractionListener{
         // Internet is connected to refresh data.
         graniteViewModel.loadFlow();
     }
-    
+
     @Override
     public void onFragmentInteraction(Uri uri) {
 
