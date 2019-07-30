@@ -1,18 +1,18 @@
 package com.example.justgranite.Widget;
 
+import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.RemoteViews;
 
 
 import com.example.justgranite.FlowValue;
 import com.example.justgranite.InternetUtil;
+import com.example.justgranite.MainActivity;
 import com.example.justgranite.R;
 import com.example.justgranite.RiverSection;
 import com.example.justgranite.RiverSectionJsonUtil;
@@ -36,16 +36,9 @@ public class GraniteAppWidget extends AppWidgetProvider {
     public void onReceive(Context context, Intent intent) {
         super.onReceive(context, intent);
         if (MyOnClick.equals(intent.getAction())){
-            if (!InternetUtil.isOnline(context)){
-                // If there is no internet, nothing can be done.
-                Log.d(TAG, "no internet");
-                return;
-            }
-
-
-            // User clicked on widget so lets update widget.
-            onUpdate(context, mAppWidgetManager, mAppWidgetIds);
-
+            // launch main activity so user can adjust default gauge
+            Intent mainIntent = new Intent(context, MainActivity.class);
+            context.startActivity(mainIntent);
         }
     }
     @Override
@@ -70,6 +63,9 @@ public class GraniteAppWidget extends AppWidgetProvider {
         RemoteViews views = getRemoteViews(context, minWidth);
         appWidgetManager.updateAppWidget(new ComponentName(context, GraniteAppWidget.class), views);
 
+        // set onClicl
+        views.setOnClickPendingIntent(R.id.justgranite_widget, getPendingSelfIntent(context,MyOnClick));
+
         // First load flow from memory
         String gauge = getPrefGauge(context);
         FlowValue flowValue = getSavedFlowValue(gauge, context);
@@ -77,18 +73,12 @@ public class GraniteAppWidget extends AppWidgetProvider {
         setLayout(context, appWidgetManager, appWidgetId, flowValue, views, cellWidth);
         if (!InternetUtil.isOnline(context) || flowValue.isDataFresh()){
             // If there is no internet or the data is fresh, there is nothing to be done.
-            //return;
+            return;
         }
 
         ArrayList<String> riverIDs = RiverSectionJsonUtil.getRiverIDs(context); // Should this be run on the main thread?
         new GraniteAppWidgetAsyncTask(context, riverIDs, gauge, appWidgetManager, appWidgetId, views, cellWidth).execute();
-
-                // Construct the RemoteViews object
-                // if flowValue is null, the internet is probably off so don't update value.
-       //         if (flowValue != null && flowValue.isDataGood()) {
-         //           setLayout(context, appWidgetManager, appWidgetId, flowValue, views, cellWidth);
-                    // Save value to shared preferences
-             super.onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, newOptions);
+        super.onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, newOptions);
 
     }
 
@@ -150,14 +140,23 @@ public class GraniteAppWidget extends AppWidgetProvider {
 
     private FlowValue getSavedFlowValue(String gauge, Context context) {
         TinyDB tinyDB = new TinyDB(context);
-        FlowValue flowValue = tinyDB.getObject(gauge, FlowValue.class);
-        if (flowValue == null){
+        FlowValue flowValue;
+        try {
+            flowValue = tinyDB.getObject(gauge, FlowValue.class);
+        }
+        catch (NullPointerException e){
             flowValue = new FlowValue(0,(long) 0, gauge, context);
         }
-        else if (flowValue.getmContext() == null){
+        if (flowValue.getmContext() == null){
             flowValue.setmContext(context);
         }
         return flowValue;
+    }
+
+    protected PendingIntent getPendingSelfIntent(Context context, String action) {
+        Intent intent = new Intent(context, getClass());
+        intent.setAction(action);
+        return PendingIntent.getBroadcast(context, 0, intent, 0);
     }
 }
 
