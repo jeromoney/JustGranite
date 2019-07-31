@@ -21,10 +21,6 @@ public class TabNavigationFragment extends Fragment {
     RiverSectionPagerAdapter riverSectionPagerAdapter;
     ViewPager viewPager;
 
-    public static TabNavigationFragment newInstance() {
-        return new TabNavigationFragment();
-    }
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,

@@ -35,9 +35,7 @@ public class RiverSectionJsonUtil {
 
     /**
      * search by order of river section
-     * @param context
-     * @param section
-     * @return
+     * @return the metadata for that river section
      */
     public static RiverSection getRiverSection(Context context, int section){
         return getRiverSections(context)[section];
@@ -45,9 +43,8 @@ public class RiverSectionJsonUtil {
 
     /**
      * Search by gauge id
-     * @param context
-     * @param gaugeId
-     * @return
+     * @param gaugeId the USGS string to identify gauges
+     * @return the metadata for that river section
      */
     public static RiverSection getRiverSection(Context context, String gaugeId){
         for (RiverSection section: getRiverSections(context)){

@@ -8,7 +8,6 @@ import com.example.justgranite.RiverSectionJsonUtil;
 import java.util.ArrayList;
 
 public class StreamRepository {
-    private static final String TAG = StreamRepository.class.getSimpleName();
     private static GraniteViewModel mViewModel;
 
     public StreamRepository(GraniteViewModel viewModel, Context context){

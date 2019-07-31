@@ -60,9 +60,4 @@ public class FlowValue{
         return (getmFlow() != null && getmTimeStamp() != null &&
                 System.currentTimeMillis() - getmTimeStamp() < TimeUnit.HOURS.toMillis(1));
     }
-
-    public boolean isDataGood(){
-        return (getmFlow() != null && getmTimeStamp() != null);
-    }
-
 }

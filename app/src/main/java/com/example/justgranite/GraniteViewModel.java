@@ -14,9 +14,7 @@ import java.util.HashMap;
 
 public class GraniteViewModel extends ViewModel {
 
-    public final LiveData<String> mFlowStr;
     public final MutableLiveData<FlowValue> mFlowValue;
-    public final LiveData<String> mAgeStr;
     public final MutableLiveData<HashMap<String,FlowValue>> mStreamValues;
 
     private Context mContext;
@@ -28,16 +26,7 @@ public class GraniteViewModel extends ViewModel {
         mStreamValues.setValue(new HashMap<String,FlowValue>());
 
         mFlowValue = new MutableLiveData<>();
-        mFlowStr = Transformations.map(
-                mFlowValue,
-                flowValue -> {
-                    if (flowValue == null || flowValue.mFlow == 0) return "---";
-                    else return flowValue.mFlow.toString();}
-        );
         mFlowValue.setValue(new FlowValue(0, (long) 0, null, null));
-        mAgeStr = Transformations.map(
-                mFlowValue,
-                TimeFormatterUtil::formatFreshness);
     }
 
     public void setmContext(Context context){

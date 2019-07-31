@@ -35,11 +35,6 @@ public class RiverSectionFragment extends Fragment {
     private GraniteViewModel model;
 
 
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
     private OnFragmentInteractionListener mListener;
 
     public RiverSectionFragment() {
@@ -113,13 +108,6 @@ public class RiverSectionFragment extends Fragment {
             default:
         }
         return view;
-    }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
     }
 
     @Override

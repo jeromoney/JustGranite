@@ -110,8 +110,8 @@ public class GraniteAppWidget extends AppWidgetProvider {
     /**
      * Determine appropriate view based on row or column provided.
      *
-     * @param minWidth
-     * @return
+     * @param minWidth used to control the switch from different widget layouts
+     * @return the appropiate widget layout given the constraints
      */
     private RemoteViews getRemoteViews(Context context, int minWidth) {
         // First find out rows and columns based on width provided.

@@ -19,11 +19,8 @@ import java.util.Objects;
 import retrofit2.Response;
 
 public class DownloadAsyncTask extends AsyncTask<Void, Void, Void> {
-    static final String TAG = DownloadAsyncTask.class.getSimpleName();
     protected Context context;
     protected ArrayList<String> riverIDs;
-    protected String gauge;
-
 
     public DownloadAsyncTask(
             Context context,
@@ -45,7 +42,7 @@ public class DownloadAsyncTask extends AsyncTask<Void, Void, Void> {
     /**
      * The JSON response returned by the USGS IVS service is quite detailed. This function extracts
      * just the data we want.
-     * @param response
+     * @param response the raw internet response from USGS service
      * @return a list of gauge data flow/date/gauge
      */
     @Nullable
