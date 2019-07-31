@@ -112,13 +112,4 @@ public class TabNavigationFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
     }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        // navigage to tab
-
-    }
-
-
 }

@@ -80,7 +80,7 @@ public class DownloadAsyncTask extends AsyncTask<Void, Void, Void> {
 
     public HashMap<String, FlowValue> storeValueTinyDB(Response<StreamValue> response){
         ArrayList<FlowValue> flowValues = collapseResponse(response);
-        // i now have the flows from all gauges so store it in shared prefences
+        // i now have the flows from all gauges so store it in shared preferences
         TinyDB tinydb = new TinyDB(context);
         HashMap<String, FlowValue> flowValueHashMap = new HashMap<>();
         for (FlowValue flowValue: flowValues){
