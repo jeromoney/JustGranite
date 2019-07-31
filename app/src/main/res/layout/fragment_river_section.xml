@@ -19,16 +19,20 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-             <TextView
-                 android:layout_width="wrap_content"
-                 android:layout_height="wrap_content"
-                 android:id="@+id/section_name"
-                 android:text="@{riversection.section_name}"/>
-             <TextView
-                 android:layout_width="wrap_content"
-                 android:layout_height="wrap_content"
-                 android:id="@+id/gauge_name"
-                 android:text="@{riversection.gauge_name}"/>
+
+            <TextView
+                android:id="@+id/section_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{riversection.section_name}"
+                android:theme="@style/MaterialAlertDialog.MaterialComponents.Title.Text" />
+
+            <TextView
+                android:id="@+id/gauge_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{riversection.gauge_name}"
+                />
              <TextView
                  android:layout_width="wrap_content"
                  android:layout_height="wrap_content"

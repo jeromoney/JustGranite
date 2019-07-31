@@ -27,7 +27,6 @@ import static com.example.justgranite.Widget.GraniteAppWidgetUtils.setLayout;
  */
 public class GraniteAppWidget extends AppWidgetProvider {
 
-    private static final String TAG = GraniteAppWidget.class.getSimpleName();
     private static final String MyOnClick = "MyOnclickTag";
     private static AppWidgetManager mAppWidgetManager;
     private static int[] mAppWidgetIds;
@@ -38,6 +37,7 @@ public class GraniteAppWidget extends AppWidgetProvider {
         if (MyOnClick.equals(intent.getAction())){
             // launch main activity so user can adjust default gauge
             Intent mainIntent = new Intent(context, MainActivity.class);
+            mainIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(mainIntent);
         }
     }
@@ -63,7 +63,7 @@ public class GraniteAppWidget extends AppWidgetProvider {
         RemoteViews views = getRemoteViews(context, minWidth);
         appWidgetManager.updateAppWidget(new ComponentName(context, GraniteAppWidget.class), views);
 
-        // set onClicl
+        // set onClick
         views.setOnClickPendingIntent(R.id.justgranite_widget, getPendingSelfIntent(context,MyOnClick));
 
         // First load flow from memory

@@ -44,6 +44,18 @@ public class TabNavigationFragment extends Fragment {
         viewPager = view.findViewById(R.id.pager);
         viewPager.setAdapter(riverSectionPagerAdapter);
 
+        // set the tab to the default layout
+        TinyDB tinyDB = new TinyDB(getContext());
+        int defaultPosition;
+        try {
+            defaultPosition = tinyDB.getInt("defaultGauge");
+            viewPager.setCurrentItem(defaultPosition);
+        }
+        catch (NullPointerException e){
+            // default position doesn't exist so just do nothing and stay at the first tab
+            ;
+        }
+
         TabLayout tabLayout = view.findViewById(R.id.tab_layout);
         tabLayout.setupWithViewPager(viewPager);
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -99,6 +111,13 @@ public class TabNavigationFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        // navigage to tab
+
     }
 
 
