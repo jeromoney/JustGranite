@@ -1,24 +1,17 @@
-package com.example.justgranite.Repository;
+package com.example.justgranite.repository;
 
 import android.content.Context;
-import android.os.AsyncTask;
 import android.util.Log;
 
 import com.example.justgranite.DownloadAsyncTask;
 import com.example.justgranite.FlowValue;
 import com.example.justgranite.GraniteViewModel;
-import com.example.justgranite.RemoteDataSource.StreamRetrofitClientInstance;
-import com.example.justgranite.RemoteDataSource.StreamValue;
-import com.example.justgranite.RemoteDataSource.StreamValueService;
-import com.example.justgranite.TinyDB;
-import com.example.justgranite.Widget.GraniteAppWidgetAsyncTask;
+import com.example.justgranite.remoteDataSource.StreamRetrofitClientInstance;
+import com.example.justgranite.remoteDataSource.StreamValue;
+import com.example.justgranite.remoteDataSource.StreamValueService;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import retrofit2.Call;

@@ -28,6 +28,7 @@ task clean(type: Delete) {
 buildscript {
     dependencies {
         // Add this line - downgraded to 4.2.0 to avoid obsolete warning
+        //noinspection GradleDependency
         classpath 'com.google.gms:google-services:4.2.0'
     }
 }

@@ -1,4 +1,4 @@
-package com.example.justgranite.RemoteDataSource;
+package com.example.justgranite.remoteDataSource;
 
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;

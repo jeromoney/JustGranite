@@ -1,4 +1,4 @@
-package com.example.justgranite.RemoteDataSource;
+package com.example.justgranite.remoteDataSource;
 
 import java.util.Map;
 

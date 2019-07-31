@@ -1,15 +1,9 @@
 package com.example.justgranite;
 
-import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Log;
-import android.widget.RemoteViews;
 
-import static com.example.justgranite.Widget.GraniteAppWidgetUtils.setLayout;
-import com.example.justgranite.RemoteDataSource.StreamRetrofitClientInstance;
-import com.example.justgranite.RemoteDataSource.StreamValue;
-import com.example.justgranite.RemoteDataSource.StreamValueService;
+import com.example.justgranite.remoteDataSource.StreamValue;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -19,8 +13,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.Response;
 
 public class DownloadAsyncTask extends AsyncTask<Void, Void, Void> {

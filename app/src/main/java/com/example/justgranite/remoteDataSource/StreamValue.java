@@ -1,8 +1,7 @@
-package com.example.justgranite.RemoteDataSource;
+package com.example.justgranite.remoteDataSource;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class StreamValue {

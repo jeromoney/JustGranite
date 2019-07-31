@@ -1,4 +1,4 @@
-package com.example.justgranite.Widget;
+package com.example.justgranite.widget;
 
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
@@ -20,7 +20,7 @@ import com.example.justgranite.TinyDB;
 
 import java.util.ArrayList;
 
-import static com.example.justgranite.Widget.GraniteAppWidgetUtils.setLayout;
+import static com.example.justgranite.widget.GraniteAppWidgetUtils.setLayout;
 
 /**
  * Implementation of App Widget functionality.
@@ -28,8 +28,6 @@ import static com.example.justgranite.Widget.GraniteAppWidgetUtils.setLayout;
 public class GraniteAppWidget extends AppWidgetProvider {
 
     private static final String MyOnClick = "MyOnclickTag";
-    private static AppWidgetManager mAppWidgetManager;
-    private static int[] mAppWidgetIds;
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -43,8 +41,8 @@ public class GraniteAppWidget extends AppWidgetProvider {
     }
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
-        mAppWidgetIds = appWidgetIds;
-        mAppWidgetManager = appWidgetManager;
+        int[] mAppWidgetIds = appWidgetIds;
+        AppWidgetManager mAppWidgetManager = appWidgetManager;
 
 
         // There may be multiple widgets active, so update all of them
@@ -64,7 +62,7 @@ public class GraniteAppWidget extends AppWidgetProvider {
         appWidgetManager.updateAppWidget(new ComponentName(context, GraniteAppWidget.class), views);
 
         // set onClick
-        views.setOnClickPendingIntent(R.id.justgranite_widget, getPendingSelfIntent(context,MyOnClick));
+        views.setOnClickPendingIntent(R.id.justgranite_widget, getPendingSelfIntent(context));
 
         // First load flow from memory
         String gauge = getPrefGauge(context);
@@ -153,9 +151,9 @@ public class GraniteAppWidget extends AppWidgetProvider {
         return flowValue;
     }
 
-    protected PendingIntent getPendingSelfIntent(Context context, String action) {
+    protected PendingIntent getPendingSelfIntent(Context context) {
         Intent intent = new Intent(context, getClass());
-        intent.setAction(action);
+        intent.setAction(GraniteAppWidget.MyOnClick);
         return PendingIntent.getBroadcast(context, 0, intent, 0);
     }
 }

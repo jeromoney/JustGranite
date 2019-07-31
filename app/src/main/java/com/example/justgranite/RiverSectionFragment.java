@@ -89,7 +89,7 @@ public class RiverSectionFragment extends Fragment {
         ViewDataBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_river_section, container, false);
         View view = binding.getRoot();
         model.getmStreamValues().observe(getViewLifecycleOwner(), item -> {
-            TextView a = (TextView) this.getView().findViewById(R.id.section_flow);
+            TextView a = this.getView().findViewById(R.id.section_flow);
             String flow = item.get(mGaugeId).getmFlow().toString();
             String displayStr = String.format(getString(R.string.cfs_format),flow);
             a.setText(displayStr);

@@ -1,4 +1,4 @@
-package com.example.justgranite.Repository;
+package com.example.justgranite.repository;
 
 import android.content.Context;
 

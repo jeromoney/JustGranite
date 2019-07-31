@@ -1,15 +1,9 @@
 <resources>
     <string name="app_name">JustGranite</string>
-    <string name="flowDescription">The flow at the Arkansas River below Granite is %s cfs.</string>
     <string name="flowDefault">---</string>
     <string name="no_internet">No internet</string>
-    <string name="granite_url"><![CDATA[https://waterservices.usgs.gov/nwis/iv/?format=waterml,2.0&sites=07087050&parameterCd=00060]]></string>
     <string name="cfs_format">%s cfs</string>
-    <string name="granite_gauge_url">https://waterdata.usgs.gov/monitoring-location/07087050/</string>
     <string name="ageDefault">tap to update</string>
-    <string name="numbers">NUMBERS</string>
-    <string name="browns">BROWNS</string>
-    <string name="royal_gorge">ROYAL GORGE</string>
     <string name="granite_gauge_id">07087050</string>
     <string name="default_gauge_text">this gauge will be displayed on widget</string>
 </resources>

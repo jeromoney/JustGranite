@@ -7,7 +7,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 
-import com.example.justgranite.Repository.StreamRepository;
+import com.example.justgranite.repository.StreamRepository;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -66,7 +66,7 @@ public class GraniteViewModel extends ViewModel {
 
     public LiveData<HashMap<String,FlowValue>> getmStreamValues() {
         return mStreamValues;
-    };
+    }
 
     public void setmStreamValues(HashMap<String, FlowValue> flowValueHashMap){
         mStreamValues.setValue(flowValueHashMap);

@@ -53,7 +53,6 @@ public class TabNavigationFragment extends Fragment {
         }
         catch (NullPointerException e){
             // default position doesn't exist so just do nothing and stay at the first tab
-            ;
         }
 
         TabLayout tabLayout = view.findViewById(R.id.tab_layout);

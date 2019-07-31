@@ -1,4 +1,4 @@
-package com.example.justgranite.Widget;
+package com.example.justgranite.widget;
 
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
@@ -6,9 +6,9 @@ import android.util.Log;
 import android.widget.RemoteViews;
 
 import com.example.justgranite.FlowValue;
-import com.example.justgranite.RemoteDataSource.StreamRetrofitClientInstance;
-import com.example.justgranite.RemoteDataSource.StreamValue;
-import com.example.justgranite.RemoteDataSource.StreamValueService;
+import com.example.justgranite.remoteDataSource.StreamRetrofitClientInstance;
+import com.example.justgranite.remoteDataSource.StreamValue;
+import com.example.justgranite.remoteDataSource.StreamValueService;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,7 +18,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.example.justgranite.Widget.GraniteAppWidgetUtils.setLayout;
+import static com.example.justgranite.widget.GraniteAppWidgetUtils.setLayout;
 
 public class GraniteAppWidgetAsyncTask extends com.example.justgranite.DownloadAsyncTask {
     private String TAG = GraniteAppWidget.class.getSimpleName();

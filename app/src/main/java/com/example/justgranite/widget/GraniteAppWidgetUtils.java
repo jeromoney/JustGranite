@@ -1,4 +1,4 @@
-package com.example.justgranite.Widget;
+package com.example.justgranite.widget;
 
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
@@ -26,15 +26,11 @@ public class GraniteAppWidgetUtils {
             ageStr = TimeFormatterUtil.formatFreshness(flowValue) + String.format(" (%s)", section.getAcronym());
         }
         String widgetText = context.getString(R.string.cfs_format);
-        switch(cellWidth){
-            case 1:
-                views.setTextViewText(R.id.appwidget_text, flowValue.mFlow.toString());
-                break;
-
-            default:
-                views.setTextViewText(R.id.appwidget_text, String.format(widgetText, flowStr));
-                views.setTextViewText(R.id.data_freshness, ageStr);
-                break;
+        if (cellWidth == 1) {
+            views.setTextViewText(R.id.appwidget_text, flowValue.mFlow.toString());
+        } else {
+            views.setTextViewText(R.id.appwidget_text, String.format(widgetText, flowStr));
+            views.setTextViewText(R.id.data_freshness, ageStr);
         }
 
         // Instruct the widget manager to update the widget
