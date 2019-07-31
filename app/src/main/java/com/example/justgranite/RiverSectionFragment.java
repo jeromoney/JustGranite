@@ -16,6 +16,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.Objects;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -34,8 +36,6 @@ public class RiverSectionFragment extends Fragment {
 
     private GraniteViewModel model;
 
-
-    private OnFragmentInteractionListener mListener;
 
     public RiverSectionFragment() {
         // Required empty public constructor
@@ -64,7 +64,7 @@ public class RiverSectionFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        model = ViewModelProviders.of(getActivity()).get(GraniteViewModel.class);
+        model = ViewModelProviders.of(Objects.requireNonNull(getActivity())).get(GraniteViewModel.class);
 
     }
 
@@ -84,10 +84,10 @@ public class RiverSectionFragment extends Fragment {
         ViewDataBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_river_section, container, false);
         View view = binding.getRoot();
         model.getmStreamValues().observe(getViewLifecycleOwner(), item -> {
-            TextView a = this.getView().findViewById(R.id.section_flow);
-            String flow = item.get(mGaugeId).getmFlow().toString();
+            TextView flowView = Objects.requireNonNull(this.getView()).findViewById(R.id.section_flow);
+            String flow = Objects.requireNonNull(item.get(mGaugeId)).getmFlow().toString();
             String displayStr = String.format(getString(R.string.cfs_format),flow);
-            a.setText(displayStr);
+            flowView.setText(displayStr);
 
         });
 
@@ -114,17 +114,10 @@ public class RiverSectionFragment extends Fragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
         }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
     }
 
     /**

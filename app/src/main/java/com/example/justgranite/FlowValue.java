@@ -57,7 +57,7 @@ public class FlowValue{
     }
 
     public boolean isDataFresh(){
-        return (getmFlow() != null && getmTimeStamp() != null &&
+        return (getmTimeStamp() != null &&
                 System.currentTimeMillis() - getmTimeStamp() < TimeUnit.HOURS.toMillis(1));
     }
 }

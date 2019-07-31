@@ -48,15 +48,10 @@ public class DownloadAsyncTask extends AsyncTask<Void, Void, Void> {
     @Nullable
     private static ArrayList<FlowValue> collapseResponse(Response<StreamValue> response){
         List<StreamValue.StreamValueService.TimeSeries> streamValues;
-        try {
-            streamValues = response.body().streamValueService.timeSeries;
-        }
-        catch (NullPointerException e){
-            return null;
-        }
+        streamValues = Objects.requireNonNull(response.body()).streamValueService.timeSeries;
         String gaugeId;
         int flow;
-        Long timeStamp;
+        long timeStamp;
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
         Date mDate;
         ArrayList<FlowValue> flowValues = new ArrayList<>();

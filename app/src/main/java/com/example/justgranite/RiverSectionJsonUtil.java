@@ -26,9 +26,9 @@ public class RiverSectionJsonUtil {
 
     public static ArrayList<String> getRiverIDs(Context context){
         RiverSection[] riverSections = getRiverSections(context);
-        ArrayList<String> riverIDs = new ArrayList<String>();
-        for (int i = 0; i< riverSections.length; i++){
-            riverIDs.add(riverSections[i].getId());
+        ArrayList<String> riverIDs = new ArrayList<>();
+        for (RiverSection riverSection : riverSections) {
+            riverIDs.add(riverSection.getId());
         }
         return riverIDs;
     }

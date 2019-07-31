@@ -4,7 +4,6 @@ import android.content.Context;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 
 import com.example.justgranite.repository.StreamRepository;
@@ -23,7 +22,7 @@ public class GraniteViewModel extends ViewModel {
     public GraniteViewModel(){
         // create a list of livedata objects for each section
         mStreamValues = new MutableLiveData<>();
-        mStreamValues.setValue(new HashMap<String,FlowValue>());
+        mStreamValues.setValue(new HashMap<>());
 
         mFlowValue = new MutableLiveData<>();
         mFlowValue.setValue(new FlowValue(0, (long) 0, null, null));
@@ -62,7 +61,12 @@ public class GraniteViewModel extends ViewModel {
     }
 
     public void loadFlow(){
-        if (!getmFlowValue().getValue().isDataFresh()) {
+        boolean isDataFresh = false;
+        if (getmFlowValue().getValue() != null){
+            isDataFresh = getmFlowValue().getValue().isDataFresh();
+        }
+
+        if (!isDataFresh) {
             new StreamRepository(this, mContext);
         }
     }
