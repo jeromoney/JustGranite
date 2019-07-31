@@ -2,6 +2,8 @@ package com.example.justgranite;
 
 import android.content.Context;
 
+import androidx.annotation.NonNull;
+
 import java.util.concurrent.TimeUnit;
 
 public class FlowValue{
@@ -28,8 +30,11 @@ public class FlowValue{
     public void setmGaugeId(String gaugeId){
         mGaugeId = gaugeId;
     }
+
+    @NonNull
     public Integer getmFlow() {
-        return mFlow;
+        if (mFlow != null) return mFlow;
+        else return 0;
     }
     public String getmGaugeId(){ return mGaugeId;}
     public Long getmTimeStamp(){
@@ -59,4 +64,5 @@ public class FlowValue{
     public boolean isDataGood(){
         return (getmFlow() != null && getmTimeStamp() != null);
     }
+
 }

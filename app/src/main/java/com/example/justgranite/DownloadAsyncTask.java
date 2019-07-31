@@ -3,6 +3,8 @@ package com.example.justgranite;
 import android.content.Context;
 import android.os.AsyncTask;
 
+import androidx.annotation.Nullable;
+
 import com.example.justgranite.remoteDataSource.StreamValue;
 
 import java.text.ParseException;
@@ -12,6 +14,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import retrofit2.Response;
 
@@ -45,8 +48,15 @@ public class DownloadAsyncTask extends AsyncTask<Void, Void, Void> {
      * @param response
      * @return a list of gauge data flow/date/gauge
      */
+    @Nullable
     private static ArrayList<FlowValue> collapseResponse(Response<StreamValue> response){
-        List<StreamValue.StreamValueService.TimeSeries> streamValues = response.body().streamValueService.timeSeries;
+        List<StreamValue.StreamValueService.TimeSeries> streamValues;
+        try {
+            streamValues = response.body().streamValueService.timeSeries;
+        }
+        catch (NullPointerException e){
+            return null;
+        }
         String gaugeId;
         int flow;
         Long timeStamp;
@@ -75,7 +85,7 @@ public class DownloadAsyncTask extends AsyncTask<Void, Void, Void> {
         // i now have the flows from all gauges so store it in shared preferences
         TinyDB tinydb = new TinyDB(context);
         HashMap<String, FlowValue> flowValueHashMap = new HashMap<>();
-        for (FlowValue flowValue: flowValues){
+        for (FlowValue flowValue: Objects.requireNonNull(flowValues)){
             tinydb.putObject(flowValue.getmGaugeId(),flowValue);
             flowValueHashMap.put(flowValue.getmGaugeId(), flowValue);
         }

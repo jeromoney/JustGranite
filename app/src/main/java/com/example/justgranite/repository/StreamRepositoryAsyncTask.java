@@ -3,6 +3,8 @@ package com.example.justgranite.repository;
 import android.content.Context;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 import com.example.justgranite.DownloadAsyncTask;
 import com.example.justgranite.FlowValue;
 import com.example.justgranite.GraniteViewModel;
@@ -39,7 +41,7 @@ public class StreamRepositoryAsyncTask extends DownloadAsyncTask {
             Call<StreamValue> call = service.getStreamsValues(options);
             call.enqueue(new Callback<StreamValue>() {
                 @Override
-                public void onResponse(Call<StreamValue> call, Response<StreamValue> response) {
+                public void onResponse(@NonNull Call<StreamValue> call, @NonNull Response<StreamValue> response) {
                     HashMap<String, FlowValue> flowValueHashMap = StreamRepositoryAsyncTask.super.storeValueTinyDB(response);
 
                     // update viewmodel if available
@@ -47,7 +49,7 @@ public class StreamRepositoryAsyncTask extends DownloadAsyncTask {
                 }
 
                 @Override
-                public void onFailure(Call<StreamValue> call, Throwable t) {
+                public void onFailure(@NonNull Call<StreamValue> call, @NonNull Throwable t) {
                     Log.i(TAG, t.getMessage());
                 }
             });

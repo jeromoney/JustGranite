@@ -21,7 +21,12 @@ public class RiverSection {
     }
 
     public String getAcronym() {
-        return acronym;
+        if (acronym != null){
+            return acronym;
+        }
+        else {
+            return "";
+        }
     }
 
     public String getImage() {

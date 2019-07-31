@@ -10,6 +10,8 @@ import com.example.justgranite.RiverSection;
 import com.example.justgranite.RiverSectionJsonUtil;
 import com.example.justgranite.TimeFormatterUtil;
 
+import java.util.Objects;
+
 public class GraniteAppWidgetUtils {
     public static void setLayout(final Context context, AppWidgetManager appWidgetManager,
                                   int appWidgetId, FlowValue flowValue, RemoteViews views, int cellWidth){
@@ -23,11 +25,12 @@ public class GraniteAppWidgetUtils {
             flowStr = flowValue.getmFlow().toString();
             // look up initial for gauge and add to age str
             RiverSection section = RiverSectionJsonUtil.getRiverSection(context, flowValue.mGaugeId);
-            ageStr = TimeFormatterUtil.formatFreshness(flowValue) + String.format(" (%s)", section.getAcronym());
+            ageStr = TimeFormatterUtil.formatFreshness(flowValue) + String.format(" (%s)", Objects.requireNonNull(section).getAcronym());
         }
         String widgetText = context.getString(R.string.cfs_format);
         if (cellWidth == 1) {
-            views.setTextViewText(R.id.appwidget_text, flowValue.mFlow.toString());
+            // for samller widget, eliminate the cfs notation
+            views.setTextViewText(R.id.appwidget_text, flowStr);
         } else {
             views.setTextViewText(R.id.appwidget_text, String.format(widgetText, flowStr));
             views.setTextViewText(R.id.data_freshness, ageStr);

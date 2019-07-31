@@ -8,8 +8,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class RiverSectionJsonUtil {
     private static RiverSection[] getRiverSections(Context context){
@@ -69,8 +67,7 @@ public class RiverSectionJsonUtil {
             }
             outputStream.close();
             inputStream.close();
-        } catch (IOException e) {
-
+        } catch (IOException ignored) {
         }
         return outputStream.toString();
     }

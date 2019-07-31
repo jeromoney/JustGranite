@@ -5,6 +5,8 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.RemoteViews;
 
+import androidx.annotation.NonNull;
+
 import com.example.justgranite.FlowValue;
 import com.example.justgranite.remoteDataSource.StreamRetrofitClientInstance;
 import com.example.justgranite.remoteDataSource.StreamValue;
@@ -53,7 +55,7 @@ public class GraniteAppWidgetAsyncTask extends com.example.justgranite.DownloadA
         Call<StreamValue> call = service.getStreamsValues(options);
         call.enqueue(new Callback<StreamValue>() {
             @Override
-            public void onResponse(Call<StreamValue> call, Response<StreamValue> response) {
+            public void onResponse(@NonNull Call<StreamValue> call, @NonNull Response<StreamValue> response) {
                 // got my response now collapse response to list of stream flows
                 HashMap<String, FlowValue> flowValueHashMap = GraniteAppWidgetAsyncTask.super.storeValueTinyDB(response);
                 // At this spot, I either want to update view model or widget
@@ -61,7 +63,7 @@ public class GraniteAppWidgetAsyncTask extends com.example.justgranite.DownloadA
 
             }
             @Override
-            public void onFailure(Call<StreamValue> call, Throwable t) {
+            public void onFailure(@NonNull Call<StreamValue> call, @NonNull Throwable t) {
                 Log.i(TAG, t.getMessage());
             }
         });
@@ -72,7 +74,7 @@ public class GraniteAppWidgetAsyncTask extends com.example.justgranite.DownloadA
 
     private void setWidget(HashMap<String, FlowValue> flowValueHashMap){
         FlowValue flowValue = flowValueHashMap.get(gauge);
-        flowValue.setmContext(context);
+        if (flowValue != null) flowValue.setmContext(context);
         setLayout(context, appWidgetManager, appWidgetId, flowValue, views, cellWidth);
     }
 
