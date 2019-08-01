@@ -6,4 +6,5 @@
     <string name="ageDefault">tap to update</string>
     <string name="granite_gauge_id">07087050</string>
     <string name="default_gauge_text">this gauge will be displayed on widget</string>
+    <string name="server_failure_message">Unable to contact USGS server</string>
 </resources>
