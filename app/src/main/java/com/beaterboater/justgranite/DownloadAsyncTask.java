@@ -18,6 +18,8 @@ import java.util.Objects;
 
 import retrofit2.Response;
 
+import static java.lang.Math.max;
+
 public class DownloadAsyncTask extends AsyncTask<Void, Void, Void> {
     protected Context context;
     protected ArrayList<String> riverIDs;
@@ -58,6 +60,7 @@ public class DownloadAsyncTask extends AsyncTask<Void, Void, Void> {
         for (StreamValue.StreamValueService.TimeSeries streamValue: streamValues){
             gaugeId = streamValue.name.split(":")[1];
             flow = streamValue.streamValues.get(0).value.get(0).flow;
+            flow = max(flow, 0); // When the gauge is offline, it returns -99999
             String timeStampStr = streamValue.streamValues.get(0).value.get(0).dateTime;
             // Got the time as a String and now convert to a milliseconds since epoch
             try {

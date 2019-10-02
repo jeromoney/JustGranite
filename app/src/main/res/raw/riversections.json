@@ -2,19 +2,19 @@
   {
     "id": "07087050",
     "section_name": "Numbers",
-    "gauge_name": "Arkansas River Below Granite",
+    "gauge_name": "Arkansas River Below Granite  -- gauge offline until April",
     "acronym": "#",
     "image": "drawable/numbers"
   }, {
     "id": "07091200",
     "section_name": "Browns",
-    "gauge_name": "Arkansas River near Nathrop",
+    "gauge_name": "Arkansas River near Nathrop -- gauge offline until April",
     "acronym": "b",
     "image": "drawable/browns"
   }, {
     "id": "07094500",
     "section_name": "The Gorge",
-    "gauge_name": "Arkansas River at Parkdale",
+    "gauge_name": "Arkansas River at Parkdale -- gauge offline until April",
     "acronym": "r",
     "image": "drawable/royalgorge"
   }
