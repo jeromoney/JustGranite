@@ -72,8 +72,8 @@ public class GraniteAppWidget extends AppWidgetProvider {
             return;
         }
 
-        ArrayList<String> riverIDs = RiverSectionJsonUtil.getRiverIDs(context); // Should this be run on the main thread?
-        new GraniteAppWidgetAsyncTask(context, riverIDs, gauge, appWidgetManager, appWidgetId, views, cellWidth).execute();
+        RiverSection[] riverSections = RiverSectionJsonUtil.getRiverSections(context); // Should this be run on the main thread?
+        new GraniteAppWidgetAsyncTask(context, riverSections, gauge, appWidgetManager, appWidgetId, views, cellWidth).execute();
         super.onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, newOptions);
 
     }

@@ -7,6 +7,7 @@ public class RiverSection {
     private String gauge_name;
     private String acronym;
     private String image;
+    private String source;
 
     public String getId() {
         return id;
@@ -19,6 +20,8 @@ public class RiverSection {
     public String getGauge_name() {
         return gauge_name;
     }
+
+    public String getSource(){return source;}
 
     public String getAcronym() {
         if (acronym != null){

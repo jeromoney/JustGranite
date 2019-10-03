@@ -2,7 +2,6 @@ package com.beaterboater.justgranite;
 
 import android.content.Context;
 
-import com.beaterboater.justgranite.R;
 import com.google.gson.Gson;
 
 import java.io.ByteArrayOutputStream;
@@ -11,13 +10,30 @@ import java.io.InputStream;
 import java.util.ArrayList;
 
 public class RiverSectionJsonUtil {
-    private static RiverSection[] getRiverSections(Context context){
+    public static RiverSection[] getRiverSections(Context context, String... selection) {
         InputStream inputStream = context.getResources().openRawResource(R.raw.riversections);
         String jsonString = readTextFile(inputStream);
 
         // Create gson object
         Gson gson = new Gson();
-        return gson.fromJson(jsonString, RiverSection[].class);
+        if (selection.length == 0) {
+            // return all sections
+            return gson.fromJson(jsonString, RiverSection[].class);
+        }
+        else {
+            // return only selections
+            RiverSection[] allSections = gson.fromJson(jsonString, RiverSection[].class);
+            ArrayList<RiverSection> selectedSections = new ArrayList<>();
+            int counter = 0;
+            for (RiverSection riverSection: allSections){
+                if (riverSection.getSource().equals(selection[0])){
+                    counter++;
+                    selectedSections.add(riverSection);
+                }
+            }
+            return selectedSections.toArray(new RiverSection[counter]);
+        }
+
     }
 
 
@@ -25,14 +41,6 @@ public class RiverSectionJsonUtil {
         return getRiverSections(context).length;
     }
 
-    public static ArrayList<String> getRiverIDs(Context context){
-        RiverSection[] riverSections = getRiverSections(context);
-        ArrayList<String> riverIDs = new ArrayList<>();
-        for (RiverSection riverSection : riverSections) {
-            riverIDs.add(riverSection.getId());
-        }
-        return riverIDs;
-    }
 
     /**
      * search by order of river section

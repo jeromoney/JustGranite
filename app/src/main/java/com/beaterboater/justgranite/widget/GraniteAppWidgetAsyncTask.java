@@ -6,20 +6,29 @@ import android.util.Log;
 import android.widget.RemoteViews;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.beaterboater.justgranite.DownloadAsyncTask;
 import com.beaterboater.justgranite.FlowValue;
+import com.beaterboater.justgranite.RiverSection;
 import com.beaterboater.justgranite.remoteDataSource.StreamValue;
 import com.beaterboater.justgranite.remoteDataSource.StreamRetrofitClientInstance;
 import com.beaterboater.justgranite.remoteDataSource.StreamValueService;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import static java.lang.Math.max;
 
 public class GraniteAppWidgetAsyncTask extends DownloadAsyncTask {
     private String TAG = GraniteAppWidget.class.getSimpleName();
@@ -31,13 +40,13 @@ public class GraniteAppWidgetAsyncTask extends DownloadAsyncTask {
     protected int cellWidth;
 
     GraniteAppWidgetAsyncTask(Context context,
-                              ArrayList<String> riverIDs,
+                              RiverSection[] riverSections,
                               String gauge,
                               AppWidgetManager appWidgetManager,
                               int appWidgetId,
                               RemoteViews views,
                               int cellWidth){
-        super(context, riverIDs);
+        super(context, riverSections);
         this.gauge = gauge;
         this.appWidgetManager = appWidgetManager;
         this.appWidgetId = appWidgetId;
@@ -47,7 +56,7 @@ public class GraniteAppWidgetAsyncTask extends DownloadAsyncTask {
 
     @Override
     protected Void doInBackground(Void... aVoid) {
-        if (riverIDs.size() == 0) return null;
+        if (riverSections.length == 0) return null;
         Map<String, String> options = super.getOptions();
 
         StreamValueService service = StreamRetrofitClientInstance.getRetrofitInstance().create(StreamValueService.class);
@@ -56,7 +65,8 @@ public class GraniteAppWidgetAsyncTask extends DownloadAsyncTask {
             @Override
             public void onResponse(@NonNull Call<StreamValue> call, @NonNull Response<StreamValue> response) {
                 // got my response now collapse response to list of stream flows
-                HashMap<String, FlowValue> flowValueHashMap = GraniteAppWidgetAsyncTask.super.storeValueTinyDB(response);
+                ArrayList<FlowValue> flowValues = collapseResponse(response);
+                HashMap<String, FlowValue> flowValueHashMap = GraniteAppWidgetAsyncTask.super.storeValueTinyDB(flowValues);
                 // At this spot, I either want to update view model or widget
                 setWidget(flowValueHashMap);
 
@@ -76,5 +86,37 @@ public class GraniteAppWidgetAsyncTask extends DownloadAsyncTask {
         if (flowValue != null) flowValue.setmContext(context);
         GraniteAppWidgetUtils.setLayout(context, appWidgetManager, appWidgetId, flowValue, views, cellWidth);
     }
+
+    @Nullable
+    private static ArrayList<FlowValue> collapseResponse(Response<StreamValue> response){
+        List<StreamValue.StreamValueService.TimeSeries> streamValues;
+        if (response.body() == null){
+            return new ArrayList<FlowValue>();
+        }
+        streamValues = Objects.requireNonNull(response.body()).streamValueService.timeSeries;
+        String gaugeId;
+        int flow;
+        long timeStamp;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+        Date mDate;
+        ArrayList<FlowValue> flowValues = new ArrayList<>();
+        for (StreamValue.StreamValueService.TimeSeries streamValue: streamValues){
+            gaugeId = streamValue.name.split(":")[1];
+            flow = streamValue.streamValues.get(0).value.get(0).flow;
+            flow = max(flow, 0); // When the gauge is offline, it returns -99999
+            String timeStampStr = streamValue.streamValues.get(0).value.get(0).dateTime;
+            // Got the time as a String and now convert to a milliseconds since epoch
+            try {
+                mDate = sdf.parse(timeStampStr);
+                timeStamp = mDate.getTime();
+            } catch (ParseException e) {
+                e.printStackTrace();
+                timeStamp = (long) 0;
+            }
+            flowValues.add(new FlowValue(flow, timeStamp, gaugeId, null));
+        }
+        return flowValues;
+    }
+
 
 }

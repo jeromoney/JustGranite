@@ -87,7 +87,13 @@ public class RiverSectionFragment extends Fragment {
         View view = binding.getRoot();
         model.getmStreamValues().observe(getViewLifecycleOwner(), item -> {
             TextView flowView = Objects.requireNonNull(this.getView()).findViewById(R.id.section_flow);
-            String flow = Objects.requireNonNull(item.get(mGaugeId)).getmFlow().toString();
+            String flow;
+            if (item.get(mGaugeId) == null){
+                flow = "0";
+            }
+            else {
+                flow = item.get(mGaugeId).getmFlow().toString();
+            }
             String displayStr = String.format(getString(R.string.cfs_format),flow);
             flowView.setText(displayStr);
 

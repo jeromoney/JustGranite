@@ -8,7 +8,6 @@ import androidx.lifecycle.ViewModel;
 
 import com.beaterboater.justgranite.repository.StreamRepository;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class GraniteViewModel extends ViewModel {
@@ -34,11 +33,12 @@ public class GraniteViewModel extends ViewModel {
         TinyDB tinyDB = new TinyDB(context);
         HashMap<String,FlowValue> flowValues = new  HashMap<String,FlowValue>(){};
 
-        ArrayList<String> riverIds = RiverSectionJsonUtil.getRiverIDs(context);
-        for (String riverId : riverIds){
+        RiverSection[] riverSections = RiverSectionJsonUtil.getRiverSections(context);
+        for (RiverSection riverSection : riverSections){
+            String riverId = riverSection.getId();
             FlowValue value = new FlowValue(0,null,riverId,context);
             // check if saved value loaded before
-            if (tinyDB.getAll().containsKey(riverId)){
+            if (tinyDB.getAll().containsKey(riverSection)){
                 FlowValue savedFloadValue = tinyDB.getObject(riverId, FlowValue.class);
                 value.setmFlow(savedFloadValue.getmFlow());
                 value.setmTimeStamp(savedFloadValue.getmTimeStamp());
@@ -57,7 +57,12 @@ public class GraniteViewModel extends ViewModel {
     }
 
     public void setmStreamValues(HashMap<String, FlowValue> flowValueHashMap){
-        mStreamValues.setValue(flowValueHashMap);
+        // need to merge values
+        HashMap<String,FlowValue> oldHashmap = mStreamValues.getValue();
+        for (String key: flowValueHashMap.keySet()){
+            oldHashmap.put(key, flowValueHashMap.get(key));
+        }
+        mStreamValues.setValue(oldHashmap);
     }
 
     public void loadFlow(){

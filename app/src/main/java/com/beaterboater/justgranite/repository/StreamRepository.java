@@ -3,9 +3,8 @@ package com.beaterboater.justgranite.repository;
 import android.content.Context;
 
 import com.beaterboater.justgranite.GraniteViewModel;
+import com.beaterboater.justgranite.RiverSection;
 import com.beaterboater.justgranite.RiverSectionJsonUtil;
-
-import java.util.ArrayList;
 
 public class StreamRepository {
     private static GraniteViewModel mViewModel;
@@ -16,7 +15,10 @@ public class StreamRepository {
     }
 
     private static void updateStreamValues(Context context){
-        ArrayList<String> riverIDs = RiverSectionJsonUtil.getRiverIDs(context); // Should this be run on the main thread?
-        new StreamRepositoryAsyncTask(context, riverIDs, mViewModel).execute();
+        RiverSection[] USGSriverSections = RiverSectionJsonUtil.getRiverSections(context, "usgs");
+        RiverSection[] coDWRiverSections = RiverSectionJsonUtil.getRiverSections(context, "coDWR"); // Should this be run on the main thread?
+        new USGSStreamRepositoryAsyncTask(context, USGSriverSections, mViewModel).execute();
+        new CODWRStreamRepositoryAsyncTask(context, coDWRiverSections, mViewModel).execute();
+
     }
 }
