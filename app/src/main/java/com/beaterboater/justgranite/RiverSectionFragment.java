@@ -107,11 +107,11 @@ public class RiverSectionFragment extends Fragment {
             case "Numbers":
                 imageView.setImageResource(R.drawable.numbers);
                 break;
-            case "Browns":
-                imageView.setImageResource(R.drawable.browns);
+            case "Gore":
+                imageView.setImageResource(R.drawable.gore);
                 break;
-            case "The Gorge":
-                imageView.setImageResource(R.drawable.royalgorge);
+            case "Bailey":
+                imageView.setImageResource(R.drawable.bailey);
                 break;
             default:
         }
