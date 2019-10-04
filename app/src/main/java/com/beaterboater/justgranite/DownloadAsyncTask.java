@@ -20,7 +20,7 @@ import retrofit2.Response;
 
 import static java.lang.Math.max;
 
-public class DownloadAsyncTask extends AsyncTask<Void, Void, Void> {
+public abstract class DownloadAsyncTask extends AsyncTask<Void, Void, Void> {
     protected Context context;
     protected RiverSection[] riverSections;
 
@@ -53,7 +53,7 @@ public class DownloadAsyncTask extends AsyncTask<Void, Void, Void> {
         return flowValueHashMap;
     }
 
-    public Map<String, String> getOptions(){ //TODO - this won't work when adding Colorado DWR
+    public Map<String, String> getOptions(){
         Map<String, String> options = new HashMap<>();
 
         options.put("format","json"); //format=json
@@ -70,4 +70,6 @@ public class DownloadAsyncTask extends AsyncTask<Void, Void, Void> {
         }
         return options;
     }
+
+    protected abstract void updateAfterResponse(ArrayList<FlowValue> flowValues);
 }

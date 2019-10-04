@@ -12,8 +12,5 @@ public class ColoradoStreamValue {
         public String abbrev;
         public String measDateTime;
         public Integer measValue;
-
-
-
     }
 }
