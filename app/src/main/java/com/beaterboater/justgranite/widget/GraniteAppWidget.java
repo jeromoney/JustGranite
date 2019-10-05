@@ -70,7 +70,11 @@ public class GraniteAppWidget extends AppWidgetProvider {
             return;
         }
 
-        RiverSection[] riverSections = RiverSectionJsonUtil.getRiverSections(context); // Should this be run on the main thread?
+
+        // just get the default gauge
+        RiverSection prefSection = RiverSectionJsonUtil.getRiverSection(context, gauge);
+        RiverSection[] riverSections = new RiverSection[1];
+        riverSections[0] = prefSection;
         new GraniteAppWidgetAsyncTask(context, riverSections, gauge, appWidgetManager, appWidgetId, views, cellWidth).execute();
         super.onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, newOptions);
 

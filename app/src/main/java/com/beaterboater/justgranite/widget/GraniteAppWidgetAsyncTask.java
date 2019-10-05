@@ -58,6 +58,7 @@ public class GraniteAppWidgetAsyncTask extends StreamRepositoryAsyncTask {
 
     @Override
     protected void updateAfterResponse(ArrayList<FlowValue> flowValues){
+        if (flowValues.size() == 0){return;}
         GraniteAppWidgetAsyncTask.super.storeValueTinyDB(flowValues);
         FlowValue flowValue = new TinyDB(context).getObject(gauge, FlowValue.class);
         setWidget(flowValue);
