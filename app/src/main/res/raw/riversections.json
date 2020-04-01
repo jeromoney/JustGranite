@@ -2,23 +2,23 @@
   {
     "id": "07087050",
     "section_name": "Numbers",
-    "gauge_name": "Arkansas River Below Granite  -- gauge offline until April",
+    "gauge_name": "Arkansas River Below Granite",
     "acronym": "#",
     "image": "drawable/numbers",
     "source":"usgs"
   }, {
-    "id": "09058000",
-    "section_name": "Gore",
-    "gauge_name": "Colorado River near Kremmling, CO",
-    "acronym": "g",
+    "id": "07091200",
+    "section_name": "Browns",
+    "gauge_name": "Arkansas River near Nathrop",
+    "acronym": "b",
     "image": "drawable/browns",
     "source":"usgs"
   }, {
-    "id": "PLABAICO",
-    "section_name": "Bailey",
-    "gauge_name": "North Fork South Platte River at Bailey",
-    "acronym": "b",
-    "image": "drawable/bailey",
-    "source":"coDWR"
+    "id": "07094500",
+    "section_name": "The Gorge",
+    "gauge_name": "Arkansas River at Parkdale",
+    "acronym": "r",
+    "image": "drawable/royalgorge",
+    "source":"usgs"
   }
 ]
